@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.holodeckb2b.ebms3.persistency.entities.PullRequest;
 import org.holodeckb2b.interfaces.core.HolodeckB2BCoreInterface;
 import org.holodeckb2b.interfaces.general.EbMSConstants;
+import org.holodeckb2b.interfaces.messagemodel.IEbmsMessage;
 import org.holodeckb2b.interfaces.messagemodel.IPullRequest;
 import org.holodeckb2b.interfaces.pmode.ILeg;
 import org.holodeckb2b.interfaces.pmode.IPMode;
@@ -278,6 +278,16 @@ public class PullWorker implements IWorkerTask {
         @Override
         public String getPModeId() {
             return pModeId;
+        }
+
+        @Override
+        public String getHolodeckB2BCoreId() {
+            return null;
+        }
+
+        @Override
+        public IEbmsMessage getParentEbmsMessage() {
+            return null;
         }
     }
 }

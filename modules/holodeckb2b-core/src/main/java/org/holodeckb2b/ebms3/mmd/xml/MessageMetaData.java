@@ -21,11 +21,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
 import org.holodeckb2b.common.util.Utils;
 import org.holodeckb2b.interfaces.general.IProperty;
 import org.holodeckb2b.interfaces.general.ITradingPartner;
 import org.holodeckb2b.interfaces.messagemodel.ICollaborationInfo;
+import org.holodeckb2b.interfaces.messagemodel.IEbmsMessage;
+import org.holodeckb2b.interfaces.messagemodel.IMessageUnit;
 import org.holodeckb2b.interfaces.messagemodel.IPayload;
 import org.holodeckb2b.interfaces.messagemodel.IUserMessage;
 import org.simpleframework.xml.Element;
@@ -37,11 +38,12 @@ import org.simpleframework.xml.core.Persister;
 
 /**
  * Represents the root element <code>MessageMetaData</code> from the <i>message meta data</i> (MMD for short) XML
- * document that can be used to exchange User Message message units between business application and Holodeck B2B. The
- * structure of the MMD documents is defined by XML schema <i>http://holodeck-b2b.org/schemas/2014/06/mmd</i>.
- * <p>New since version 2.0-rc2 is the indicator whether the files containing the payload data should be removed after
- * successful submission to the Holodeck B2B Core. (Note that this class only enables exchange of the indicator, it is
- * upto submitter implementations to use it!). This new attribute is defined in version 1.1 of the XSD.
+ * document that can be used to exchange information on User Message message units between business application and
+ * Holodeck B2B. The structure of the MMD documents is defined by XML schema <i>
+ * http://holodeck-b2b.org/schemas/2014/06/mmd</i>.
+ * <p>In version HB2B_NEXT_VERSION the message model was extended with the {@link IEbmsMessage} element and <i>CoreId</i> attribute.
+ * These new meta-data elements are not essential for the exchange of User Messages between Holodeck B2B and the
+ * business application and therefore this class does not support them.
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
@@ -309,5 +311,31 @@ public class MessageMetaData implements IUserMessage {
             // If some part of configuration is not there, a NPE would occur which we ignore and just return null
         }
         return pmodeId;
+    }
+
+    /**
+     * This method was added to the {@link IMessageUnit} interface in version HB2B_NEXT_VERSION to get the internal id
+     * of a message unit. This information however is not essential for exchange of information between Holodeck B2B and
+     * business application and therefore not support in this class.
+     *
+     * @return Fixed value: <code>null</code>
+     * @since  HB2B_NEXT_VERSION
+     */
+    @Override
+    public String getHolodeckB2BCoreId() {
+        return null;
+    }
+
+    /**
+     * This method was added to the {@link IMessageUnit} interface in version HB2B_NEXT_VERSION to get the meta-data of
+     * the ebMS message this message unit was contained in. This information however is not essential for exchange of
+     * information between Holodeck B2B and business application and therefore not support in this class.
+     *
+     * @return Fixed value: <code>null</code>
+     * @since  HB2B_NEXT_VERSION
+     */
+    @Override
+    public IEbmsMessage getParentEbmsMessage() {
+        return null;
     }
 }

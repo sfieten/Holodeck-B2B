@@ -41,6 +41,30 @@ import java.util.Date;
 public interface IMessageUnit {
 
     /**
+     * Gets the Holodeck B2B internal identifier for this specific <code>MessageUnit</code> instance.
+     * <p>As documented at {@link #getMessageId()} the ebMS MessageId can not be used as the (unique) identifier of
+     * a specific message unit instance so this internal identifier is introduced. The CoreId is included in this
+     * interface to enable external components to reference a specific message unit when needed.
+     * <p><b>NOTE:</b> This identifier is assigned by the Holodeck B2B Core and only available when the instance is/has
+     * been processed by it. It SHOULD NOT be set by external component as it will be overwritten by the Core.
+     *
+     * @return  The unique Holodeck B2B internal identifier for this <code>MessageUnit</code> instance
+     * @since HB2B_NEXT_VERSION
+     */
+    public String getHolodeckB2BCoreId();
+
+    /**
+     * Gets the meta-data of the ebMS message this message unit is contained in.
+     * <p><b>NOTE:</b> The relation between the message unit and the ebMS message is created by the Holodeck B2B Core
+     * during processing of the message. External components therefore SHOULD NOT set the relation. It also implies that
+     * an outgoing message unit does not need to be associated with a parent ebMS message when it is not yet sent.
+     *
+     * @return The meta-data of the containing ebMS message as a {@link IEbmsMessage} object
+     * @since HB2B_NEXT_VERSION
+     */
+    public IEbmsMessage getParentEbmsMessage();
+
+    /**
      * Gets the timestamp when the message unit was created.
      * <p>Corresponds to the <code>MessageInfo/Timestamp</code> element. See section 5.2.2.1 of the ebMS Core
      * specification.
@@ -62,6 +86,10 @@ public interface IMessageUnit {
      * Get the message id of the message unit to which this message unit is a response.
      * <p>Corresponds to the <code>MessageInfo/RefToMessageId</code> element. See section 5.2.2.1 of the ebMS Core
      * specification.
+     * <p>NOTE: Although the <code>eb:MessageId</code> values must be globally unique identifier it can not be used as
+     * the primary identifier of a specific instance because a message can be resent and there is also no guarantee that
+     * other implementations will adhere to this requirement. Therefore Holodeck B2B uses its own
+     * <i>HolodeckB2BCoreId</i> to identify a specific <code>MessageUnit</code> instance.
      *
      * @return  The message id of the message this message unit is a response to
      */

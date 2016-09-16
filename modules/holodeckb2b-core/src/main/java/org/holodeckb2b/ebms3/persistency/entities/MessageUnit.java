@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -29,6 +28,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -37,9 +38,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
-
 import org.holodeckb2b.common.util.Utils;
 import org.holodeckb2b.ebms3.persistent.dao.MessageUnitDAO;
+import org.holodeckb2b.interfaces.messagemodel.IEbmsMessage;
 import org.holodeckb2b.interfaces.pmode.ILeg.Label;
 
 /**
@@ -47,10 +48,13 @@ import org.holodeckb2b.interfaces.pmode.ILeg.Label;
  * <p>This class stores the general meta-data relevant to all kinds of message units. In addition to the information
  * included in the <code>eb:MessageInfo</code> element contained in the ebMS header this consists of the processing
  * states.
- * <p>It also declares one JPA query <i>MessageUnit.findWithMessageIdInDirection</i> that finds all message units with
- * the given message id and which where either sent or received by Holodeck B2B. Although the message id must be unique
- * multiple message unit instances with the same id can exist because of retransmissions (and because other applications
- * may not guarantee uniqueness).
+ * <p>It also declares two JPA queries:<ol>
+ * <li><i>MessageUnit.findWithMessageIdInDirection</i> finds all message units with the given message id and which where
+ *        either sent or received by Holodeck B2B. Although the message id must be unique multiple message unit
+ *        instances with the same id can exist because of retransmissions (and because other applications may not
+ *        guarantee uniqueness).</li>
+ * <li><i>MessageUnit.findWithLastStateChangeBefore</i> finds all message units which last change in processing state is
+ *        before the specified date.</li></ol>
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
@@ -85,6 +89,17 @@ public abstract class MessageUnit implements Serializable, org.holodeckb2b.inter
      */
     public long getOID() {
         return OID;
+    }
+
+    /**
+     * Gets the Holodeck B2B internal id for this instance.
+     *
+     * @return  A <code>String</code> containing the hex representation of the OID
+     * @since   HB2B_NEXT_VERSION
+     */
+    @Override
+    public String getHolodeckB2BCoreId() {
+        return Long.toHexString(OID);
     }
 
     @Override
@@ -212,6 +227,29 @@ public abstract class MessageUnit implements Serializable, org.holodeckb2b.inter
         return DIRECTION;
     }
 
+    /**
+     * Gets the meta-data of the ebMS message this message unit is contained in.
+     * <p><b>NOTE:</b> The relation between the message unit and the ebMS message is created by the Holodeck B2B Core
+     * during processing of the message. External components therefore SHOULD NOT set the relation. It also implies that
+     * an outgoing message unit does not need to be associated with a parent ebMS message when it is not yet sent.
+     *
+     * @return The meta-data of the containing ebMS message as a {@link IEbmsMessage} object
+     * @since HB2B_NEXT_VERSION
+     */
+    public IEbmsMessage getParentEbmsMessage() {
+        return containingEbmsMessage;
+    }
+
+    /**
+     * Sets the parent ebMS message that this message unit is contained in.
+     * <p>NOTE: The specified object should be persisted before this message unit instance is saved!
+     *
+     * @param parent The {@link EbmsMessage} that represent the ebMS message this message unit is contained in.
+     */
+    public void setParentEbmsMessage(final EbmsMessage parent) {
+        containingEbmsMessage = parent;
+    }
+
     /*
      * Fields
      *
@@ -252,4 +290,8 @@ public abstract class MessageUnit implements Serializable, org.holodeckb2b.inter
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderBy("PROC_STATE_NUM DESC")
     private List<ProcessingState>       states;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MSG_OID")
+    private EbmsMessage    containingEbmsMessage;
 }
