@@ -17,7 +17,6 @@
 package org.holodeckb2b.ebms3.util;
 
 import java.util.Collections;
-
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.holodeckb2b.common.exceptions.DatabaseException;
@@ -28,6 +27,7 @@ import org.holodeckb2b.ebms3.constants.ProcessingStates;
 import org.holodeckb2b.ebms3.errors.OtherContentError;
 import org.holodeckb2b.ebms3.persistency.entities.EbmsError;
 import org.holodeckb2b.ebms3.persistency.entities.ErrorMessage;
+import org.holodeckb2b.ebms3.persistency.entities.MessageUnit;
 import org.holodeckb2b.ebms3.persistent.dao.EntityProxy;
 import org.holodeckb2b.ebms3.persistent.dao.MessageUnitDAO;
 import org.holodeckb2b.interfaces.messagemodel.IEbmsError;
@@ -70,7 +70,7 @@ public class CatchAxisFault extends BaseHandler {
                     Change the processing state of the message units to FAILED unless the message unit is already
                     processed completely, i.e. its processing state is DELIVERED or WAITING_FOR_RECEIPT.
                 */
-                for (final EntityProxy mu : MessageContextUtils.getSentMessageUnits(mc)) {
+                for (final EntityProxy<MessageUnit> mu : MessageContextUtils.getSentMessageUnits(mc)) {
                     // Changing the processing state may fail if the problems are caused by the database.
                     try {
                         final String curState = mu.entity.getCurrentProcessingState().getName();
@@ -126,7 +126,7 @@ public class CatchAxisFault extends BaseHandler {
                     There may already be message units created for the response. Although they maybe could be sent in
                     the OUT_FAULT_FLOW the processing state of these message units are also changed to FAILED.
                 */
-                for (final EntityProxy mu : MessageContextUtils.getRcvdMessageUnits(mc)) {
+                for (final EntityProxy<MessageUnit> mu : MessageContextUtils.getRcvdMessageUnits(mc)) {
                     // Changing the processing state may fail if the problems are caused by the database.
                     try {
                         final String curState = mu.entity.getCurrentProcessingState().getName();

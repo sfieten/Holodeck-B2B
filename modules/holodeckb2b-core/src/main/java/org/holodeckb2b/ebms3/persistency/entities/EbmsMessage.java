@@ -23,7 +23,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,7 +41,7 @@ import org.holodeckb2b.interfaces.messagemodel.IMessageUnit;
  */
 @Entity
 @Table(name = "MESSAGE")
-public class EbmsMessage implements IEbmsMessage {
+public class EbmsMessage implements IEbmsMessage, PersistentEntity {
 
     /**
      * Gets the Holodeck B2B internal id for this instance.
@@ -59,6 +61,24 @@ public class EbmsMessage implements IEbmsMessage {
 
     public void setTimestamp(final Date timestamp) {
         MSG_TIMESTAMP = timestamp;
+    }
+
+    @Override
+    public boolean isRequest() {
+        return IS_REQUEST;
+    }
+
+    public void setIsRequest(final boolean isRequest) {
+        IS_REQUEST = isRequest;
+    }
+
+    @Override
+    public IEbmsMessage getRelatedMessage() {
+        return relatedMessage;
+    }
+
+    public void setRelatedMessage(final EbmsMessage relatedMsg) {
+        this.relatedMessage = relatedMsg;
     }
 
     @Override
@@ -120,12 +140,18 @@ public class EbmsMessage implements IEbmsMessage {
     @Temporal(TemporalType.TIMESTAMP)
     private Date    MSG_TIMESTAMP;
 
+    private boolean IS_REQUEST;
+
     @Column(length = 1024)
     private String  TARGET_URL;
 
     private String  REMOTE_ADDRESS;
 
     private String  SOFTWARE_ID;
+
+    @OneToOne
+    @JoinColumn(name="RELMSG_OID")
+    private EbmsMessage relatedMessage;
 
     @OneToMany(mappedBy = "containingEbmsMessage", targetEntity = MessageUnit.class)
     private Collection<IMessageUnit>    msg_units;

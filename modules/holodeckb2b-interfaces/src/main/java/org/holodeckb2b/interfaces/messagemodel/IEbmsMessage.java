@@ -46,6 +46,25 @@ public interface IEbmsMessage {
     public Date   getTimestamp();
 
     /**
+     * Indicates whether this message was sent as a request to another MSH or received as a response on the back-channel
+     * of the transport protocol.
+     *
+     * @return <code>true</code> when this ebMS message is a request, i.e. sent by Holodeck B2B,<br>
+     *         <code>false</code> when it is received by Holodeck B2B as a response.
+     */
+    public boolean isRequest();
+
+    /**
+     * Gets the ebMS message that is either the request or response related to this message and is sent on the other
+     * channel of a two-channel transport protocol.
+     * <p>NOTE: This only sets the relation on transport level between two ebMS / SOAP messages. It does not define any
+     * relation between the message units that may be contained in the messages.
+     *
+     * @return The ebMS/SOAP message this message is related to.
+     */
+    public IEbmsMessage getRelatedMessage();
+
+    /**
      * Gets the list of <i>ebMS message units</i> that is contained in this ebMS message.
      * <p>For incoming messages only the message units that Holodeck B2B could read from the ebMS Message are available.
      * It is therefore possible that an empty collection is returned when no message could be read from the received

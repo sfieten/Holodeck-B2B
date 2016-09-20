@@ -18,7 +18,6 @@ package org.holodeckb2b.ebms3.handlers.inflow;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.apache.axis2.context.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -136,7 +135,7 @@ public class ProcessErrors extends BaseHandler {
             MessageUnitDAO.setFailed(errSignalProxy);
         } else {
             // Change the processing state of the found message unit(s)
-            for (final EntityProxy mu : refdMessages) {
+            for (final EntityProxy<MessageUnit> mu : refdMessages) {
                 if (isWarning(errSignalProxy.entity)) {
                     log.debug("Error level is warning, set processing state of referenced message ["
                                                                     + mu.entity.getMessageId() + "] to warning");

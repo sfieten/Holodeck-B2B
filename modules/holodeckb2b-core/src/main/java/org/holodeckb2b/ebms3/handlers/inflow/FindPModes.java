@@ -18,7 +18,6 @@ package org.holodeckb2b.ebms3.handlers.inflow;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.holodeckb2b.common.exceptions.DatabaseException;
@@ -199,7 +198,7 @@ public class FindPModes extends BaseHandler {
      * @param mu    The message unit for which the P-Mode could not be found
      * @throws DatabaseException    When changing the processing state fails.
      */
-    private void createErrorNoPMode(final MessageContext mc, final EntityProxy muProxy)
+    private void createErrorNoPMode(final MessageContext mc, final EntityProxy<? extends MessageUnit> muProxy)
                                             throws DatabaseException {
         // Extract entity object
         final MessageUnit mu = muProxy.entity;

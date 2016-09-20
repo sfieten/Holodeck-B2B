@@ -62,7 +62,7 @@ public class SenderWorker extends AbstractWorkerTask {
                     if (MessageUnitDAO.startProcessingMessageUnit(message)) {
                         // only when we could succesfully set processing state really start processing
                         log.debug("Start processing message [" + message.entity.getMessageId() + "]");
-                        Axis2Sender.sendMessage(message, log);
+                        Axis2Sender.sendMessageUnit(message, log);
                     } else
                         // Message probably already in process
                         log.debug("Could not start processing message [" + message.entity.getMessageId()

@@ -16,15 +16,13 @@
  */
 package org.holodeckb2b.ebms3.axis2;
 
-import static org.apache.axis2.client.ServiceClient.ANON_OUT_IN_OP;
-
 import java.util.List;
-
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.OperationClient;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
+import static org.apache.axis2.client.ServiceClient.ANON_OUT_IN_OP;
 import org.apache.axis2.context.MessageContext;
 import org.apache.commons.logging.Log;
 import org.holodeckb2b.axis2.Axis2Utils;
@@ -48,10 +46,10 @@ public class Axis2Sender {
     /**
      * Send the message unit to the other MSH.
      *
-     * @param message   The MessageUnit to send
+     * @param msgProxy   The MessageUnit to send
      * @param log       The log to use for writing log information
      */
-    public static void sendMessage(final EntityProxy msgProxy, final Log log) {
+    public static void sendMessageUnit(final EntityProxy<MessageUnit> msgProxy, final Log log) {
         ServiceClient sc;
         OperationClient oc;
         final MessageContext msgCtx = new MessageContext();
@@ -74,11 +72,13 @@ public class Axis2Sender {
                 msgCtx.setProperty(MessageContextProperties.OUT_PULL_REQUEST, msgProxy);
             } else if (message instanceof ErrorMessage) {
                 log.debug("Message to send is a ErrorMessage");
-                MessageContextUtils.addErrorSignalToSend(msgCtx, msgProxy);
+                MessageContextUtils.addErrorSignalToSend(msgCtx, msgProxy.castToProxyOf(ErrorMessage.class));
             } else if (message instanceof Receipt) {
                 log.debug("Message to send is a Receipt");
-                MessageContextUtils.addReceiptToSend(msgCtx, msgProxy);
-            }
+                MessageContextUtils.addReceiptToSend(msgCtx, msgProxy.castToProxyOf(Receipt.class));
+            } else
+                throw new IllegalArgumentException("");
+
             oc.addMessageContext(msgCtx);
 
             // This dummy EPR has to be provided to be able to trigger message sending. It will be replaced later

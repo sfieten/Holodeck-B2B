@@ -20,6 +20,7 @@ import org.apache.axis2.context.MessageContext;
 import org.holodeckb2b.ebms3.persistency.entities.PullRequest;
 import org.holodeckb2b.ebms3.persistency.entities.Receipt;
 import org.holodeckb2b.interfaces.delivery.IMessageDeliverer;
+import org.holodeckb2b.interfaces.messagemodel.IEbmsMessage;
 
 /**
  * Defines constants for {@link MessageContext} properties that Holodeck B2B
@@ -27,8 +28,15 @@ import org.holodeckb2b.interfaces.delivery.IMessageDeliverer;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class MessageContextProperties {
+public interface MessageContextProperties {
 
+    /**
+     * Holds the {@link IEbmsMessage} object that contains the meta-data on the ebMS message container that is being
+     * processed in the current flow.
+     * 
+     * @since HB2B_NEXT_VERSION
+     */
+    public static final String EBMS_MESSAGE = "org:holodeckb2b:ebMS-msg";
     /**
      * Holds the <i>primary</i> outgoing user message. The P-Mode of this
      * message unit determines the configuration that is used for sending the

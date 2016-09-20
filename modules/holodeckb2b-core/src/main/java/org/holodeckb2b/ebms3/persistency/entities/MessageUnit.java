@@ -16,7 +16,6 @@
  */
 package org.holodeckb2b.ebms3.persistency.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -77,7 +76,7 @@ import org.holodeckb2b.interfaces.pmode.ILeg.Label;
                     "AND   s1.START <= :beforeDate"
             )}
 )
-public abstract class MessageUnit implements Serializable, org.holodeckb2b.interfaces.messagemodel.IMessageUnit {
+public abstract class MessageUnit implements PersistentEntity, org.holodeckb2b.interfaces.messagemodel.IMessageUnit {
 
     /**
      * Indicates whether the message unit was sent (OUT) or received (IN) by Holodeck B2B
@@ -242,7 +241,7 @@ public abstract class MessageUnit implements Serializable, org.holodeckb2b.inter
 
     /**
      * Sets the parent ebMS message that this message unit is contained in.
-     * <p>NOTE: The specified object should be persisted before this message unit instance is saved!
+     * <p>NOTE: The specified parent should be persisted before this message unit instance is saved!
      *
      * @param parent The {@link EbmsMessage} that represent the ebMS message this message unit is contained in.
      */
