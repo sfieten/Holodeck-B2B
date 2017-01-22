@@ -30,8 +30,8 @@ import org.holodeckb2b.common.exceptions.DatabaseException;
 import org.holodeckb2b.common.exceptions.DuplicateMessageIdError;
 import org.holodeckb2b.common.util.MessageIdGenerator;
 import org.holodeckb2b.common.util.Utils;
-import org.holodeckb2b.ebms3.constants.ProcessingStates;
-import org.holodeckb2b.ebms3.errors.OtherContentError;
+import org.holodeckb2b.common.messagemodel.ProcessingStates;
+import org.holodeckb2b.persistency.errors.OtherContentError;
 import org.holodeckb2b.persistency.entities.AgreementReference;
 import org.holodeckb2b.persistency.entities.CollaborationInfo;
 import org.holodeckb2b.persistency.entities.Description;
@@ -242,33 +242,33 @@ public class MessageUnitDAO {
      * @return          The <code>EntityProxy</i> for the new Error Signal message unit. Although it is an
      *                  <code>EntityProxy</code> it is not stored in the database!
      */
-    public static EntityProxy<ErrorMessage> createTransientOtherError(final OtherContentError errMsg) {
-        // When no error message, nothing to do
-        if (errMsg == null)
-            return null;
-
-        // Just to make sure, first try again to save the error to the database
-        EntityProxy<ErrorMessage> resultMU = null;
-        try {
-            resultMU =
-                createOutgoingErrorMessageUnit(Collections.singletonList((EbmsError) errMsg) , null, null, true, true);
-        } catch (final DatabaseException dbe) {
-            // Okay, we really can't save it to the database
-            final ErrorMessage transientErrorMU = new ErrorMessage();
-            // Generate a message id and timestamp for the new error message unit
-            transientErrorMU.setMessageId(MessageIdGenerator.createMessageId());
-            transientErrorMU.setTimestamp(new Date());
-            transientErrorMU.setDirection(MessageUnit.Direction.OUT);
-            // Add the error to it
-            transientErrorMU.addError(errMsg);
-            // Set indicator to include SOAP Fault
-            transientErrorMU.setAddSOAPFault(true);
-            // Create entityproxy
-            resultMU = new EntityProxy<>(transientErrorMU);
-        }
-
-        return resultMU;
-    }
+//    public static EntityProxy<ErrorMessage> createTransientOtherError(final OtherContentError errMsg) {
+//        // When no error message, nothing to do
+//        if (errMsg == null)
+//            return null;
+//
+//        // Just to make sure, first try again to save the error to the database
+//        EntityProxy<ErrorMessage> resultMU = null;
+//        try {
+//            resultMU =
+//                createOutgoingErrorMessageUnit(Collections.singletonList((EbmsError) errMsg) , null, null, true, true);
+//        } catch (final DatabaseException dbe) {
+//            // Okay, we really can't save it to the database
+//            final ErrorMessage transientErrorMU = new ErrorMessage();
+//            // Generate a message id and timestamp for the new error message unit
+//            transientErrorMU.setMessageId(MessageIdGenerator.createMessageId());
+//            transientErrorMU.setTimestamp(new Date());
+//            transientErrorMU.setDirection(MessageUnit.Direction.OUT);
+//            // Add the error to it
+//            transientErrorMU.addError(errMsg);
+//            // Set indicator to include SOAP Fault
+//            transientErrorMU.setAddSOAPFault(true);
+//            // Create entityproxy
+//            resultMU = new EntityProxy<>(transientErrorMU);
+//        }
+//
+//        return resultMU;
+//    }
 
     /**
      * Creates and stores a new Pull Request Signal message unit based on the provided pull request meta-data.

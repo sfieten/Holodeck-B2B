@@ -35,7 +35,10 @@ import org.holodeckb2b.interfaces.core.HolodeckB2BCoreInterface;
 public class JPAUtil {
     private static final class SingletonHolder
     {
-      static final EntityManagerFactory instance = Persistence.createEntityManagerFactory (((InternalConfiguration) HolodeckB2BCoreInterface.getConfiguration()).getPersistencyUnit());
+      static final EntityManagerFactory instance =
+              Persistence.createEntityManagerFactory(
+                      ((InternalConfiguration) HolodeckB2BCoreInterface.getConfiguration())
+                              .getPersistencyUnit());
     }
 
     /**

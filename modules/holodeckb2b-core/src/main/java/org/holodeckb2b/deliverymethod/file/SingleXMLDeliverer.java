@@ -33,13 +33,14 @@ import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.holodeckb2b.common.mmd.xml.MessageMetaData;
 import org.holodeckb2b.common.mmd.xml.Property;
 import org.holodeckb2b.common.util.Utils;
-import org.holodeckb2b.ebms3.packaging.UserMessage;
+import org.holodeckb2b.packaging.UserMessage;
 import org.holodeckb2b.interfaces.delivery.IMessageDeliverer;
 import org.holodeckb2b.interfaces.delivery.MessageDeliveryException;
 import org.holodeckb2b.interfaces.general.EbMSConstants;
 import org.holodeckb2b.interfaces.messagemodel.IMessageUnit;
 import org.holodeckb2b.interfaces.messagemodel.IPayload;
 import org.holodeckb2b.interfaces.messagemodel.IUserMessage;
+import org.holodeckb2b.packaging.PayloadInfo;
 
 /**
  * Is an {@link IMessageDeliverer} implementation that delivers the message unit to the business application by writing
@@ -137,7 +138,7 @@ public class SingleXMLDeliverer extends SimpleFileDeliverer {
                 refProp.setValue("pl-" + i++);
                 p.getProperties().add(refProp);
             }
-            org.holodeckb2b.ebms3.packaging.PayloadInfo.createElement(usrMsgElement, mmd.getPayloads());
+            PayloadInfo.createElement(usrMsgElement, mmd.getPayloads());
         }
 
         String msgFilePath = null;

@@ -81,4 +81,6 @@ public interface InternalConfiguration extends IConfiguration {
      * @since HB2B_NEXT_VERSION
      */
     public String getPersistencyProviderClass();
+
+    String getPersistencyUnit();
 }

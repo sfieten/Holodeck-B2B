@@ -33,7 +33,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axis2.context.MessageContext;
 import org.holodeckb2b.common.util.Utils;
-import org.holodeckb2b.ebms3.constants.SecurityConstants;
+import org.holodeckb2b.constants.SecurityConstants;
 import org.holodeckb2b.interfaces.config.IConfiguration;
 import org.holodeckb2b.interfaces.core.HolodeckB2BCoreInterface;
 import org.holodeckb2b.interfaces.pmode.security.ISigningConfiguration;

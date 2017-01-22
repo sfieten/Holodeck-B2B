@@ -21,7 +21,7 @@ import org.apache.axis2.context.MessageContext;
 import org.apache.wss4j.common.ConfigurationConstants;
 import org.holodeckb2b.common.handler.BaseHandler;
 import org.holodeckb2b.common.messagemodel.util.MessageUnitUtils;
-import org.holodeckb2b.ebms3.axis2.MessageContextUtils;
+import org.holodeckb2b.axis2.MessageContextUtils;
 import org.holodeckb2b.interfaces.core.HolodeckB2BCoreInterface;
 import org.holodeckb2b.interfaces.messagemodel.IUserMessage;
 import org.holodeckb2b.interfaces.persistency.entities.IMessageUnitEntity;

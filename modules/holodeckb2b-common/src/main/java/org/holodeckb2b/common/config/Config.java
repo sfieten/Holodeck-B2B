@@ -550,4 +550,9 @@ public class Config implements InternalConfiguration {
     public String getPersistencyProviderClass() {
         return persistencyProviderClass;
     }
+
+    @Override
+    public String getPersistencyUnit() {
+        return null;
+    }
 }

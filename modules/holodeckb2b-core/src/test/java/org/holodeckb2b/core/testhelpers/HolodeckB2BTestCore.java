@@ -17,22 +17,24 @@
 package org.holodeckb2b.core.testhelpers;
 
 import org.holodeckb2b.common.config.InternalConfiguration;
-import org.holodeckb2b.ebms3.submit.core.MessageSubmitter;
+import org.holodeckb2b.submit.core.MessageSubmitter;
 import org.holodeckb2b.events.SyncEventProcessor;
-import org.holodeckb2b.interfaces.config.IConfiguration;
 import org.holodeckb2b.interfaces.core.IHolodeckB2BCore;
 import org.holodeckb2b.interfaces.core.IHolodeckB2BUpdateManger;
 import org.holodeckb2b.interfaces.delivery.IDeliverySpecification;
 import org.holodeckb2b.interfaces.delivery.IMessageDeliverer;
 import org.holodeckb2b.interfaces.delivery.MessageDeliveryException;
 import org.holodeckb2b.interfaces.events.IMessageProcessingEventProcessor;
+import org.holodeckb2b.interfaces.persistency.IPersistencyProvider;
+import org.holodeckb2b.interfaces.persistency.dao.IDAOFactory;
 import org.holodeckb2b.interfaces.persistency.dao.IQueryManager;
 import org.holodeckb2b.interfaces.persistency.dao.IUpdateManager;
 import org.holodeckb2b.interfaces.pmode.IPModeSet;
 import org.holodeckb2b.interfaces.submit.IMessageSubmitter;
 import org.holodeckb2b.interfaces.workerpool.IWorkerPoolConfiguration;
 import org.holodeckb2b.interfaces.workerpool.TaskConfigurationException;
-import org.holodeckb2b.module.HolodeckB2BCoreImpl;
+import org.holodeckb2b.persistency.DefaultProvider;
+import org.holodeckb2b.persistency.dao.UpdateManager;
 import org.holodeckb2b.pmode.InMemoryPModeSet;
 import org.holodeckb2b.pmode.PModeManager;
 
@@ -53,15 +55,22 @@ public class HolodeckB2BTestCore implements IHolodeckB2BCore, IHolodeckB2BUpdate
 
     private IMessageProcessingEventProcessor eventProcessor;
 
+    private IPersistencyProvider provider = new DefaultProvider();
+
+    private IDAOFactory daoFactory = null;
+
     public HolodeckB2BTestCore(final String homeDir) {
         this(homeDir, null, null);
     }
 
-    public HolodeckB2BTestCore(final String homeDir, final String pmodeValidatorClass) {
+    public HolodeckB2BTestCore(final String homeDir,
+                               final String pmodeValidatorClass) {
         this(homeDir, pmodeValidatorClass, null);
     }
 
-    public HolodeckB2BTestCore(final String homeDir, final String pmodeValidatorClass, final String pmodeStorageClass) {
+    public HolodeckB2BTestCore(final String homeDir,
+                               final String pmodeValidatorClass,
+                               final String pmodeStorageClass) {
         config = new Config(homeDir, pmodeValidatorClass, pmodeStorageClass);
         pmodeSet = new InMemoryPModeSet();
         eventProcessor = new SyncEventProcessor();
@@ -73,8 +82,10 @@ public class HolodeckB2BTestCore implements IHolodeckB2BCore, IHolodeckB2BUpdate
     }
 
     @Override
-    public IMessageDeliverer getMessageDeliverer(final IDeliverySpecification deliverySpec) throws MessageDeliveryException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public IMessageDeliverer getMessageDeliverer(
+            final IDeliverySpecification deliverySpec)
+            throws MessageDeliveryException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -114,6 +125,6 @@ public class HolodeckB2BTestCore implements IHolodeckB2BCore, IHolodeckB2BUpdate
 
     @Override
     public IUpdateManager getUpdateManager() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new UpdateManager(daoFactory.getUpdateManager());
     }
 }

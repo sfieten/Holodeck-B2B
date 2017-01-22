@@ -143,4 +143,9 @@ public class Config implements InternalConfiguration {
     public String getPersistencyProviderClass() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public String getPersistencyUnit() {
+        return null;
+    }
 }

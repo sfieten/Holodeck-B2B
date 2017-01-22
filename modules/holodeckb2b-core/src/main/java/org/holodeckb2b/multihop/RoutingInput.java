@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.holodeckb2b.ebms3.packaging.UserMessage;
+import org.holodeckb2b.packaging.UserMessage;
 import org.holodeckb2b.interfaces.general.EbMSConstants;
 import org.holodeckb2b.interfaces.messagemodel.IUserMessage;
 

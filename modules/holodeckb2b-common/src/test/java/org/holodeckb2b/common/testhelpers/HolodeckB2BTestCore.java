@@ -18,11 +18,13 @@ package org.holodeckb2b.common.testhelpers;
 
 import org.holodeckb2b.interfaces.config.IConfiguration;
 import org.holodeckb2b.interfaces.core.IHolodeckB2BCore;
+import org.holodeckb2b.interfaces.core.IHolodeckB2BUpdateManger;
 import org.holodeckb2b.interfaces.delivery.IDeliverySpecification;
 import org.holodeckb2b.interfaces.delivery.IMessageDeliverer;
 import org.holodeckb2b.interfaces.delivery.MessageDeliveryException;
 import org.holodeckb2b.interfaces.events.IMessageProcessingEventProcessor;
 import org.holodeckb2b.interfaces.persistency.dao.IQueryManager;
+import org.holodeckb2b.interfaces.persistency.dao.IUpdateManager;
 import org.holodeckb2b.interfaces.pmode.IPModeSet;
 import org.holodeckb2b.interfaces.submit.IMessageSubmitter;
 import org.holodeckb2b.interfaces.workerpool.IWorkerPoolConfiguration;
@@ -34,7 +36,7 @@ import org.holodeckb2b.interfaces.workerpool.TaskConfigurationException;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class HolodeckB2BTestCore implements IHolodeckB2BCore {
+public class HolodeckB2BTestCore implements IHolodeckB2BCore, IHolodeckB2BUpdateManger {
 
     private final Config  config;
 
@@ -98,6 +100,19 @@ public class HolodeckB2BTestCore implements IHolodeckB2BCore {
 
     @Override
     public IQueryManager getQueryManager() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Gets the data access object that should be used to store and update the meta-data on processed message units.
+     * <p>The returned data access object is a facade to the one provided by the persistency provider to ensure that
+     * changes in the message unit meta-data are managed correctly.
+     *
+     * @return The {@link IUpdateManager} that Core classes should use to update meta-data of message units
+     * @since HB2B_NEXT_VERSION
+     */
+    @Override
+    public IUpdateManager getUpdateManager() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

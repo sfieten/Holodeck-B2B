@@ -37,6 +37,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import org.holodeckb2b.common.util.Utils;
+import org.holodeckb2b.interfaces.processingmodel.IMessageUnitProcessingState;
 import org.holodeckb2b.persistency.dao.MessageUnitDAO;
 import org.holodeckb2b.interfaces.pmode.ILeg.Label;
 
@@ -76,7 +77,7 @@ public abstract class MessageUnit implements Serializable, org.holodeckb2b.inter
     /**
      * Indicates whether the message unit was sent (OUT) or received (IN) by Holodeck B2B
      */
-    public enum Direction { IN, OUT }
+    //public enum Direction { IN, OUT }
 
     /*
      * Getters and setters
@@ -125,16 +126,16 @@ public abstract class MessageUnit implements Serializable, org.holodeckb2b.inter
         if (states == null)
             states = new ArrayList<>();
 
-        state.setSeqNumber(Utils.isNullOrEmpty(states) ? 0 : states.get(0).getSeqNumber() + 1);
+        state.setSeqNumber(Utils.isNullOrEmpty(states) ? 0 : ((ProcessingState)states.get(0)).getSeqNumber() + 1);
         state.setMessageUnit(this);
         states.add(0, state);
     }
 
     public ProcessingState getCurrentProcessingState() {
-        return (Utils.isNullOrEmpty(states) ? null : states.get(0));
+        return (ProcessingState)(Utils.isNullOrEmpty(states) ? null : states.get(0));
     }
 
-    public List<ProcessingState> getProcessingStates() {
+    public List<IMessageUnitProcessingState> getProcessingStates() {
         return states;
     }
 
@@ -250,5 +251,5 @@ public abstract class MessageUnit implements Serializable, org.holodeckb2b.inter
 
     @OneToMany(mappedBy = "msgUnit", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderBy("PROC_STATE_NUM DESC")
-    private List<ProcessingState>       states;
+    private List<IMessageUnitProcessingState>       states;
 }

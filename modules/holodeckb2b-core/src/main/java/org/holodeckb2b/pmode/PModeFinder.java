@@ -25,7 +25,7 @@ import java.util.Map;
 
 import org.holodeckb2b.common.messagemodel.util.CompareUtils;
 import org.holodeckb2b.common.util.Utils;
-import org.holodeckb2b.ebms3.constants.SecurityConstants;
+import org.holodeckb2b.constants.SecurityConstants;
 import org.holodeckb2b.interfaces.core.HolodeckB2BCoreInterface;
 import org.holodeckb2b.interfaces.general.EbMSConstants;
 import org.holodeckb2b.interfaces.general.IAgreement;

@@ -23,7 +23,7 @@ import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.holodeckb2b.common.messagemodel.Property;
 import org.holodeckb2b.common.util.Utils;
-import org.holodeckb2b.ebms3.util.AbstractUserMessageHandler;
+import org.holodeckb2b.util.AbstractUserMessageHandler;
 import org.holodeckb2b.interfaces.as4.pmode.IAS4PayloadProfile;
 import org.holodeckb2b.interfaces.general.IProperty;
 import org.holodeckb2b.interfaces.messagemodel.IPayload;
