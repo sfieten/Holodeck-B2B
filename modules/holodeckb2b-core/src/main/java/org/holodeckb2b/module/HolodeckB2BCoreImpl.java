@@ -39,6 +39,7 @@ import org.holodeckb2b.ebms3.submit.core.MessageSubmitter;
 import org.holodeckb2b.events.SyncEventProcessor;
 import org.holodeckb2b.interfaces.config.IConfiguration;
 import org.holodeckb2b.interfaces.core.IHolodeckB2BCore;
+import org.holodeckb2b.interfaces.core.IHolodeckB2BUpdateManger;
 import org.holodeckb2b.interfaces.delivery.IDeliverySpecification;
 import org.holodeckb2b.interfaces.delivery.IMessageDeliverer;
 import org.holodeckb2b.interfaces.delivery.IMessageDelivererFactory;
@@ -64,7 +65,7 @@ import org.holodeckb2b.pmode.PModeManager;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class HolodeckB2BCoreImpl implements Module, IHolodeckB2BCore {
+public class HolodeckB2BCoreImpl implements Module, IHolodeckB2BCore, IHolodeckB2BUpdateManger {
     private static final class SubmitterSingletonHolder {
         static final IMessageSubmitter instance = new MessageSubmitter();
     }
@@ -172,6 +173,7 @@ public class HolodeckB2BCoreImpl implements Module, IHolodeckB2BCore {
 
         log.debug("Load the persistency provided for storing meta-data on message units");
         final String persistencyProviderClassname = instanceConfiguration.getPersistencyProviderClass();
+        System.out.println("persistencyProviderClassname: " + persistencyProviderClassname);
         IPersistencyProvider persistencyProvider = null;
         if (!Utils.isNullOrEmpty(persistencyProviderClassname)) {
             try {
@@ -421,7 +423,7 @@ public class HolodeckB2BCoreImpl implements Module, IHolodeckB2BCore {
      * @return  The {@link IUpdateManager} that Core classes should use to update meta-data of message units
      * @since HB2B_NEXT_VERSION
      */
-    public UpdateManager getUpdateManager() {
+    public IUpdateManager getUpdateManager() {
         return new UpdateManager(daoFactory.getUpdateManager());
     }
 

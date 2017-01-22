@@ -44,7 +44,7 @@ import org.holodeckb2b.interfaces.processingmodel.ProcessingState;
  * @author Sander Fieten <sander at holodeck-b2b.org>
  * @since HB2B_NEXT_VERSION
  */
-public class UpdateManager {
+public class UpdateManager implements IUpdateManager {
 
     /**
      * The update manager provided by the persistency provider which does the "real" work of storing the data
@@ -109,6 +109,18 @@ public class UpdateManager {
         parent.setLeg(storedObject, ILeg.Label.REQUEST);
 
         return storedObject;
+    }
+
+    /**
+     * Creates a new persistency object to store the meta-data of the given message unit.
+     *
+     * @param messageUnit The meta-data on message unit that should be stored in the new persistent object
+     * @return The created persistency object.
+     * @throws PersistenceException If an error occurs when saving the new message unit to the database.
+     */
+    @Override
+    public <T extends IMessageUnit, V extends IMessageUnitEntity> V storeMessageUnit(T messageUnit) throws PersistenceException {
+        return null;
     }
 
     /**
@@ -201,7 +213,7 @@ public class UpdateManager {
      * @param addSOAPFault      The indicator whether to add a SOAP fault.
      * @throws PersistenceException  If an error occurs when updating the indicator
      */
-    void setAddSOAPFault(final IErrorMessageEntity errorMessage, final boolean addSOAPFault)
+    public void setAddSOAPFault(final IErrorMessageEntity errorMessage, final boolean addSOAPFault)
                                                                                         throws PersistenceException {
         parent.setAddSOAPFault(errorMessage, addSOAPFault);
     }

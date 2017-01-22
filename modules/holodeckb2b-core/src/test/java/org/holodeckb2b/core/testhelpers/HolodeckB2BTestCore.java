@@ -16,19 +16,23 @@
  */
 package org.holodeckb2b.core.testhelpers;
 
+import org.holodeckb2b.common.config.InternalConfiguration;
 import org.holodeckb2b.ebms3.submit.core.MessageSubmitter;
 import org.holodeckb2b.events.SyncEventProcessor;
 import org.holodeckb2b.interfaces.config.IConfiguration;
 import org.holodeckb2b.interfaces.core.IHolodeckB2BCore;
+import org.holodeckb2b.interfaces.core.IHolodeckB2BUpdateManger;
 import org.holodeckb2b.interfaces.delivery.IDeliverySpecification;
 import org.holodeckb2b.interfaces.delivery.IMessageDeliverer;
 import org.holodeckb2b.interfaces.delivery.MessageDeliveryException;
 import org.holodeckb2b.interfaces.events.IMessageProcessingEventProcessor;
 import org.holodeckb2b.interfaces.persistency.dao.IQueryManager;
+import org.holodeckb2b.interfaces.persistency.dao.IUpdateManager;
 import org.holodeckb2b.interfaces.pmode.IPModeSet;
 import org.holodeckb2b.interfaces.submit.IMessageSubmitter;
 import org.holodeckb2b.interfaces.workerpool.IWorkerPoolConfiguration;
 import org.holodeckb2b.interfaces.workerpool.TaskConfigurationException;
+import org.holodeckb2b.module.HolodeckB2BCoreImpl;
 import org.holodeckb2b.pmode.InMemoryPModeSet;
 import org.holodeckb2b.pmode.PModeManager;
 
@@ -37,7 +41,7 @@ import org.holodeckb2b.pmode.PModeManager;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class HolodeckB2BTestCore implements IHolodeckB2BCore {
+public class HolodeckB2BTestCore implements IHolodeckB2BCore, IHolodeckB2BUpdateManger {
 
     private static final class SubmitterSingletonHolder {
         static final IMessageSubmitter instance = new MessageSubmitter();
@@ -64,7 +68,7 @@ public class HolodeckB2BTestCore implements IHolodeckB2BCore {
     }
 
     @Override
-    public IConfiguration getConfiguration() {
+    public InternalConfiguration getConfiguration() {
         return config;
     }
 
@@ -81,7 +85,8 @@ public class HolodeckB2BTestCore implements IHolodeckB2BCore {
     @Override
     public IPModeSet getPModeSet() {
         if (pmodeSet == null)
-            pmodeSet = new PModeManager(config.getPModeValidatorImplClass(), config.getPModeStorageImplClass());
+            pmodeSet = new PModeManager(config.getPModeValidatorImplClass(),
+                    config.getPModeStorageImplClass());
 
         return pmodeSet;
     }
@@ -96,13 +101,19 @@ public class HolodeckB2BTestCore implements IHolodeckB2BCore {
     }
 
     @Override
-    public void setPullWorkerPoolConfiguration(final IWorkerPoolConfiguration pullConfiguration) throws TaskConfigurationException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setPullWorkerPoolConfiguration(
+            final IWorkerPoolConfiguration pullConfiguration)
+            throws TaskConfigurationException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public IQueryManager getQueryManager() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public IUpdateManager getUpdateManager() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
