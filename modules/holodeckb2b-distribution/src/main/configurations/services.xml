@@ -20,12 +20,12 @@
 <service name="msh">
   <messageReceivers>
     <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
-                     class="org.holodeckb2b.ebms3.handlers.inflow.CheckForResponse"/>
+                     class="org.holodeckb2b.handlers.inflow.CheckForResponse"/>
   </messageReceivers>
 
   <operation name="Receive">
      <messageReceiver 
-         class="org.holodeckb2b.ebms3.handlers.inflow.CheckForResponse"/> 
+         class="org.holodeckb2b.handlers.inflow.CheckForResponse"/>
   </operation>
 
   <parameter name="supportSingleOperation" locked="xsd:true">true</parameter>

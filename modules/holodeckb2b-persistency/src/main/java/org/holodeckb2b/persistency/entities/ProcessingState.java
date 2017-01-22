@@ -16,6 +16,8 @@
  */
 package org.holodeckb2b.persistency.entities;
 
+import org.holodeckb2b.interfaces.processingmodel.IMessageUnitProcessingState;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -41,7 +43,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="MSG_STATE")
-public class ProcessingState implements Serializable {
+public class ProcessingState implements Serializable, IMessageUnitProcessingState {
 
     /*
      * Getters and setters
@@ -56,6 +58,16 @@ public class ProcessingState implements Serializable {
 
     public void setStartTime(final Date timestamp) {
         START = timestamp;
+    }
+
+    /**
+     * Gets the processing state that applied to the message from {@link #getStartTime()}.
+     *
+     * @return {@link ProcessingState}
+     */
+    @Override
+    public org.holodeckb2b.interfaces.processingmodel.ProcessingState getState() {
+        return null;
     }
 
     public Date getStartTime() {

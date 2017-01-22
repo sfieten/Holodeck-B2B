@@ -30,17 +30,17 @@ public class DefaultProvider implements IPersistencyProvider {
 
     @Override
     public String getName() {
-        
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void init() throws PersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public IDAOFactory getDAOFactory() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

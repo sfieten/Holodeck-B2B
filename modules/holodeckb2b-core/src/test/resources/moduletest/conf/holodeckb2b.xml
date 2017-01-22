@@ -117,4 +117,12 @@
     - If required the revocation check can be enable in the P-Mode.
     ===================================================================== -->
     <parameter name="CertificateRevocationCheck">false</parameter>
+
+    <!-- ====================================================================
+    - The following parameter must be defined here if we want the
+    - HolodeckB2BCoreImpl to be extended by HolodeckB2BTestCore
+    - Or we need it after persistency refactoring anyway?
+    ===================================================================== -->
+    <parameter name="PersistencyProvider">org.holodeckb2b.persistency.DefaultProvider</parameter>
+
 </holodeckb2b-config>

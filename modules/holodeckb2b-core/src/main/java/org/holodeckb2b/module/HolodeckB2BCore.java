@@ -51,6 +51,6 @@ public class HolodeckB2BCore extends HolodeckB2BCoreInterface {
      * @since HB2B_NEXT_VERSION
      */
     public static UpdateManager getUpdateManager() {
-        return ((HolodeckB2BCoreImpl) coreImplementation).getUpdateManager();
+        return (UpdateManager)((HolodeckB2BCoreImpl) coreImplementation).getUpdateManager();
     }
 }

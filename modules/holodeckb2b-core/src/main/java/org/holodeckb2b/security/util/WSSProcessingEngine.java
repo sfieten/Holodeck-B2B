@@ -35,7 +35,7 @@ import org.apache.wss4j.dom.handler.RequestData;
 import org.apache.wss4j.dom.processor.Processor;
 import org.apache.wss4j.dom.saml.DOMSAMLUtil;
 import org.apache.wss4j.dom.util.WSSecurityUtil;
-import org.holodeckb2b.ebms3.constants.SecurityConstants;
+import org.holodeckb2b.constants.SecurityConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 

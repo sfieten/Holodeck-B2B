@@ -31,8 +31,8 @@ import org.holodeckb2b.common.messagemodel.Receipt;
 import org.holodeckb2b.common.mmd.xml.MessageMetaData;
 import org.holodeckb2b.common.mmd.xml.Property;
 import org.holodeckb2b.common.util.Utils;
-import org.holodeckb2b.ebms3.packaging.ErrorSignal;
-import org.holodeckb2b.ebms3.packaging.UserMessage;
+import org.holodeckb2b.packaging.ErrorSignal;
+import org.holodeckb2b.packaging.UserMessage;
 import org.holodeckb2b.interfaces.delivery.IMessageDeliverer;
 import org.holodeckb2b.interfaces.delivery.MessageDeliveryException;
 import org.holodeckb2b.interfaces.general.EbMSConstants;
@@ -184,7 +184,7 @@ public class SimpleFileDeliverer extends AbstractFileDeliverer {
             log.debug("Create a new Receipt to prevent content from inclusion in XML");
             IReceipt deliveryReceipt = createDeliveryReceipt((IReceipt) sigMsgUnit);
             log.debug("Add receipt meta data to XML");
-            org.holodeckb2b.ebms3.packaging.Receipt.createElement(container, deliveryReceipt);
+            org.holodeckb2b.packaging.Receipt.createElement(container, deliveryReceipt);
         } else if (sigMsgUnit instanceof IErrorMessage) {
             log.debug("Add error meta data to XML");
             ErrorSignal.createElement(container, (IErrorMessage) sigMsgUnit);

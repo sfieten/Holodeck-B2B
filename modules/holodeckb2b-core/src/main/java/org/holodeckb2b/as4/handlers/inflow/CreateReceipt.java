@@ -25,10 +25,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axis2.context.MessageContext;
 import org.holodeckb2b.common.messagemodel.Receipt;
-import org.holodeckb2b.ebms3.constants.MessageContextProperties;
-import org.holodeckb2b.ebms3.constants.SecurityConstants;
-import org.holodeckb2b.ebms3.packaging.Messaging;
-import org.holodeckb2b.ebms3.util.AbstractUserMessageHandler;
+import org.holodeckb2b.constants.MessageContextProperties;
+import org.holodeckb2b.constants.SecurityConstants;
+import org.holodeckb2b.packaging.Messaging;
+import org.holodeckb2b.util.AbstractUserMessageHandler;
 import org.holodeckb2b.events.ReceiptCreatedEvent;
 import org.holodeckb2b.interfaces.core.HolodeckB2BCoreInterface;
 import org.holodeckb2b.interfaces.general.ReplyPattern;
@@ -40,6 +40,7 @@ import org.holodeckb2b.interfaces.pmode.IPMode;
 import org.holodeckb2b.interfaces.pmode.IReceiptConfiguration;
 import org.holodeckb2b.interfaces.processingmodel.ProcessingState;
 import org.holodeckb2b.module.HolodeckB2BCore;
+import org.holodeckb2b.packaging.UserMessage;
 import org.holodeckb2b.security.tokens.IAuthenticationInfo;
 import org.holodeckb2b.security.util.SecurityUtils;
 
@@ -168,7 +169,7 @@ public class CreateReceipt extends AbstractUserMessageHandler {
 
     /**
      * Creates the content of a Reception Awareness Receipt as defined in section 5.1.8 of the AS4 profile.
-     * <p>The first element returned by {@link org.holodeckb2b.ebms3.packaging.UserMessage#getElements(org.apache.axiom.om.OMElement)}
+     * <p>The first element returned by {@link UserMessage#getElements(org.apache.axiom.om.OMElement)}
      * applied to the received message is included in the <code>eb:Receipt</code> element. This implies that bundling
      * of User Message units is NOT supported by this handler.
      *
@@ -179,7 +180,7 @@ public class CreateReceipt extends AbstractUserMessageHandler {
         final ArrayList<OMElement>    rcptContent = new ArrayList<>();
         // Get the UserMessage element from the message header
         final SOAPHeaderBlock messaging = Messaging.getElement(mc.getEnvelope());
-        final OMElement umElement = (OMElement) org.holodeckb2b.ebms3.packaging.UserMessage.getElements(messaging).next();
+        final OMElement umElement = (OMElement) UserMessage.getElements(messaging).next();
         // and add it to receipt content
         rcptContent.add(umElement);
 
