@@ -33,7 +33,7 @@ import org.holodeckb2b.interfaces.messagemodel.IUserMessage;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class UserMessage {
+public class UserMessageElement {
 
     /**
      * The fully qualified name of the element as an {@link QName}
@@ -66,18 +66,18 @@ public class UserMessage {
             usermessage.addAttribute(MPC_ATTR, mpc, null);
 
         // Create the MessageInfo element
-        MessageInfo.createElement(usermessage, data);
+        MessageInfoElement.createElement(usermessage, data);
         // Create the PartyInfo element
-        PartyInfo.createElement(usermessage, data);
+        PartyInfoElement.createElement(usermessage, data);
         // Create the CollaborationInfo element
-        CollaborationInfo.createElement(usermessage, data.getCollaborationInfo());
+        CollaborationInfoElement.createElement(usermessage, data.getCollaborationInfo());
         // Create the MessageProperties element (if there are message properties)
         final Collection<IProperty> msgProps = data.getMessageProperties();
         if (Utils.isNullOrEmpty(msgProps))
-            MessageProperties.createElement(usermessage, msgProps);
+            MessagePropertiesElement.createElement(usermessage, msgProps);
 
         // Create the eb:PayloadInfo element (if there are payloads)
-        PayloadInfo.createElement(usermessage, data.getPayloads());
+        PayloadInfoElement.createElement(usermessage, data.getPayloads());
 
         return usermessage;
     }
@@ -115,25 +115,25 @@ public class UserMessage {
         umData.setMPC(Utils.isNullOrEmpty(mpc) ? EbMSConstants.DEFAULT_MPC : mpc);
 
         // Get the MessageInfo element
-        OMElement child = MessageInfo.getElement(umElement);
+        OMElement child = MessageInfoElement.getElement(umElement);
         // Read the MessageInfo element and store info in the persistency object
-        MessageInfo.readElement(child, umData);
+        MessageInfoElement.readElement(child, umData);
 
         // Get and read the PartyInfo element
-        PartyInfo.readElement(PartyInfo.getElement(umElement), umData);
+        PartyInfoElement.readElement(PartyInfoElement.getElement(umElement), umData);
 
         // Get and read the CollaborationInfo element
-        umData.setCollaborationInfo(CollaborationInfo.readElement(CollaborationInfo.getElement(umElement)));
+        umData.setCollaborationInfo(CollaborationInfoElement.readElement(CollaborationInfoElement.getElement(umElement)));
 
         // Get the MessageProperties element and process it when available
-        child = MessageProperties.getElement(umElement);
+        child = MessagePropertiesElement.getElement(umElement);
         if (child != null)
-            umData.setMessageProperties(MessageProperties.readElement(child));
+            umData.setMessageProperties(MessagePropertiesElement.readElement(child));
 
         // Get the PayloadInfo element and process it when available
-        child = PayloadInfo.getElement(umElement);
+        child = PayloadInfoElement.getElement(umElement);
         if (child != null)
-            umData.setPayloads(PayloadInfo.readElement(child));
+            umData.setPayloads(PayloadInfoElement.readElement(child));
 
         return umData;
     }

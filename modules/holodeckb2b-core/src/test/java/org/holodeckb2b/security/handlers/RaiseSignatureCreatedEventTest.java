@@ -16,26 +16,23 @@
  */
 package org.holodeckb2b.security.handlers;
 
-import java.io.File;
-import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.engine.Handler;
-import org.holodeckb2b.common.messagemodel.*;
+import org.holodeckb2b.common.messagemodel.UserMessage;
 import org.holodeckb2b.common.mmd.xml.MessageMetaData;
+import org.holodeckb2b.core.testhelpers.TestUtils;
 import org.holodeckb2b.ebms3.constants.MessageContextProperties;
 import org.holodeckb2b.ebms3.constants.SecurityConstants;
 import org.holodeckb2b.ebms3.packaging.*;
-import org.holodeckb2b.ebms3.packaging.CollaborationInfo;
-import org.holodeckb2b.ebms3.packaging.UserMessage;
+import org.holodeckb2b.ebms3.packaging.UserMessageElement;
 import org.holodeckb2b.events.SignatureCreatedEvent;
 import org.holodeckb2b.interfaces.core.HolodeckB2BCoreInterface;
 import org.holodeckb2b.interfaces.general.EbMSConstants;
 import org.holodeckb2b.interfaces.persistency.entities.IUserMessageEntity;
-import org.holodeckb2b.module.HolodeckB2BCore;
 import org.holodeckb2b.pmode.helpers.*;
 import org.holodeckb2b.core.testhelpers.HolodeckB2BTestCore;
 import org.holodeckb2b.core.testhelpers.TestEventProcessor;
@@ -50,9 +47,6 @@ import org.junit.Test;
  * @author Timur Shakuov (t.shakuov at gmail.com)
  */
 public class RaiseSignatureCreatedEventTest {
-
-    static final QName MESSAGE_ID_ELEMENT_NAME =
-            new QName(EbMSConstants.EBMS3_NS_URI, "MessageId");
 
     private static String baseDir;
 
@@ -78,23 +72,14 @@ public class RaiseSignatureCreatedEventTest {
 
     @Test
     public void testDoProcessing() throws Exception {
-        final String mmdPath =
-                this.getClass().getClassLoader()
-                        .getResource("security/handlers/full_mmd.xml").getPath();
-        final File f = new File(mmdPath);
-        MessageMetaData mmd = null;
-        try {
-            mmd = MessageMetaData.createFromFile(f);
-        } catch (final Exception e) {
-            fail("Unable to test because MMD could not be read correctly!");
-        }
+        MessageMetaData mmd = TestUtils.getMMD("security/handlers/full_mmd.xml", this);
         // Creating SOAP envelope
         SOAPEnvelope env =
                 SOAPEnv.createEnvelope(SOAPEnv.SOAPVersion.SOAP_12);
         // Adding header
         SOAPHeaderBlock headerBlock = Messaging.createElement(env);
         // Adding UserMessage from mmd
-        OMElement umElement = UserMessage.createElement(headerBlock, mmd);
+        OMElement umElement = UserMessageElement.createElement(headerBlock, mmd);
 
         System.out.println("[1] umElement: " + umElement.toString());
 
@@ -144,8 +129,7 @@ public class RaiseSignatureCreatedEventTest {
         leg.setProtocol(protocolConfig);
         pmode.addLeg(leg);
 
-        org.holodeckb2b.common.messagemodel.UserMessage um =
-                UserMessage.readElement(umElement);
+        UserMessage um = UserMessageElement.readElement(umElement);
 
         String pmodeId = um.getCollaborationInfo().getAgreement().getPModeId();
 

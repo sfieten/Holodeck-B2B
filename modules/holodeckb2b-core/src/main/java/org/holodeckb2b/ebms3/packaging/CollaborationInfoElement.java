@@ -28,7 +28,7 @@ import org.holodeckb2b.interfaces.messagemodel.ICollaborationInfo;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class CollaborationInfo {
+public class CollaborationInfoElement {
 
     /**
      * The fully qualified name of the element as an {@link QName}
@@ -60,9 +60,9 @@ public class CollaborationInfo {
 
         // Fill it based on the given data
         if (data.getAgreement() != null)
-            AgreementRef.createElement(collabInfo, data.getAgreement());
+            AgreementRefElement.createElement(collabInfo, data.getAgreement());
 
-        Service.createElement(collabInfo, data.getService());
+        ServiceElement.createElement(collabInfo, data.getService());
 
         // Elements Action and ConversationId are so simple that they are created here
         final OMElement action = f.createOMElement(Q_ACTION, collabInfo);
@@ -107,10 +107,10 @@ public class CollaborationInfo {
                                                         new org.holodeckb2b.common.messagemodel.CollaborationInfo();
 
         // Start with reading the required elements: Service, Action and ConversationId
-        OMElement child = Service.getElement(ciElement);
+        OMElement child = ServiceElement.getElement(ciElement);
         if (child != null)
             // Read the Service element and store info in entity object
-            ciData.setService(Service.readElement(child));
+            ciData.setService(ServiceElement.readElement(child));
 
         // Action child element
         child = ciElement.getFirstChildWithName(Q_ACTION);
@@ -123,9 +123,9 @@ public class CollaborationInfo {
             ciData.setConversationId(child.getText());
 
         // Get and read optional AgreementRef child element
-        child = AgreementRef.getElement(ciElement);
+        child = AgreementRefElement.getElement(ciElement);
         if (child != null)
-            ciData.setAgreement(AgreementRef.readElement(child));
+            ciData.setAgreement(AgreementRefElement.readElement(child));
 
         return ciData;
     }

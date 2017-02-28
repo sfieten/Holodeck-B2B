@@ -38,7 +38,7 @@ import org.holodeckb2b.interfaces.messagemodel.IErrorMessage;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class ErrorSignal {
+public class ErrorSignalElement {
 
     /**
      * The fully qualified name of the element as an {@link QName}
@@ -70,10 +70,10 @@ public class ErrorSignal {
     public static OMElement createElement(final OMElement messaging, final IErrorMessage errorMU) {
         // First create the SignalMessage element that is the placeholder for
         // the Error elements containing the error info
-        final OMElement signalmessage = SignalMessage.createElement(messaging);
+        final OMElement signalmessage = SignalMessageElement.createElement(messaging);
 
         // Create the generice MessageInfo element
-        MessageInfo.createElement(signalmessage, errorMU);
+        MessageInfoElement.createElement(signalmessage, errorMU);
 
         // Now create an Error element for each error in the error message unit
         for(final IEbmsError error : errorMU.getErrors())
@@ -97,7 +97,7 @@ public class ErrorSignal {
                                                         new org.holodeckb2b.common.messagemodel.ErrorMessage();
 
         // First read general information from the MessageInfo child
-        MessageInfo.readElement(MessageInfo.getElement(sigElement), errData);
+        MessageInfoElement.readElement(MessageInfoElement.getElement(sigElement), errData);
 
         // Now get all child Error elements
         final Iterator<OMElement> it = sigElement.getChildrenWithName(Q_ELEMENT_NAME);
@@ -118,7 +118,7 @@ public class ErrorSignal {
      */
     public static Iterator<OMElement> getElements(final SOAPHeaderBlock messaging) {
         // Check all SignalMessage elements in the header
-        final Iterator<OMElement> signals = SignalMessage.getElements(messaging);
+        final Iterator<OMElement> signals = SignalMessageElement.getElements(messaging);
 
         final ArrayList<OMElement>  errors = new ArrayList<>();
         while(signals.hasNext()) {
@@ -180,7 +180,7 @@ public class ErrorSignal {
         // Add Description element
         final IDescription errDescription = error.getDescription();
         if (errDescription != null && errDescription.getText() != null)
-            Description.createElement(errorElement, errDescription);
+            DescriptionElement.createElement(errorElement, errDescription);
 
         return errorElement;
     }
@@ -213,7 +213,7 @@ public class ErrorSignal {
             error.setErrorDetail(errDetailElement.getText());
 
         // Read the description element (if it exists)
-        error.setDescription(Description.readElement(Description.getElement(errorElement)));
+        error.setDescription(DescriptionElement.readElement(DescriptionElement.getElement(errorElement)));
 
         return error;
     }

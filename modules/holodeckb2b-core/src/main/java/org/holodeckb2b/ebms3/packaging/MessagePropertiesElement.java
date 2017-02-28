@@ -32,7 +32,7 @@ import org.holodeckb2b.interfaces.general.IProperty;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class MessageProperties {
+public class MessagePropertiesElement {
 
     /**
      * The fully qualified name of the element as an {@link QName}
@@ -60,7 +60,7 @@ public class MessageProperties {
 
         // Fill it based on the given data
         for(final IProperty p : properties)
-            Property.createElement(msgProps, p);
+            PropertyElement.createElement(msgProps, p);
 
         return msgProps;
     }
@@ -91,10 +91,10 @@ public class MessageProperties {
         // Create new collection
         final ArrayList<IProperty> props = new ArrayList<>();
         // Get all child elements containing the properties
-        final Iterator<OMElement> it = Property.getElements(mpElement);
+        final Iterator<OMElement> it = PropertyElement.getElements(mpElement);
         // Read each property element and add it info to the collection
         while (it.hasNext())
-            props.add(Property.readElement((OMElement) it.next()));
+            props.add(PropertyElement.readElement((OMElement) it.next()));
 
         return props;
     }

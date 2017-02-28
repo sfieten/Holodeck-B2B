@@ -25,26 +25,23 @@ import org.apache.axis2.engine.Handler;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
-import org.holodeckb2b.common.messagemodel.AgreementReference;
-import org.holodeckb2b.common.messagemodel.TradingPartner;
 import org.holodeckb2b.common.messagemodel.UserMessage;
 import org.holodeckb2b.common.mmd.xml.MessageMetaData;
 import org.holodeckb2b.core.testhelpers.HolodeckB2BTestCore;
 import org.holodeckb2b.core.testhelpers.TestUtils;
 import org.holodeckb2b.ebms3.constants.MessageContextProperties;
+import org.holodeckb2b.ebms3.constants.SecurityConstants;
 import org.holodeckb2b.ebms3.packaging.Messaging;
 import org.holodeckb2b.ebms3.packaging.SOAPEnv;
 import org.holodeckb2b.ebms3.packaging.UserMessageElement;
 import org.holodeckb2b.interfaces.core.HolodeckB2BCoreInterface;
 import org.holodeckb2b.interfaces.general.EbMSConstants;
 import org.holodeckb2b.interfaces.persistency.entities.IUserMessageEntity;
+import org.holodeckb2b.interfaces.pmode.security.ISecurityConfiguration;
 import org.holodeckb2b.persistency.dao.UpdateManager;
-import org.holodeckb2b.pmode.helpers.Agreement;
-import org.holodeckb2b.pmode.helpers.Leg;
-import org.holodeckb2b.pmode.helpers.PMode;
-import org.holodeckb2b.pmode.helpers.PartnerConfig;
+import org.holodeckb2b.pmode.helpers.*;
+import org.holodeckb2b.security.tokens.IAuthenticationInfo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -55,35 +52,36 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 
 /**
- * Created at 23:22 29.01.17
+ * Created at 23:44 29.01.17
  *
  * @author Timur Shakuov (t.shakuov at gmail.com)
  */
 @RunWith(MockitoJUnitRunner.class)
-public class FindPModesTest {
+public class AuthorizeMessageTest {
 
-    // Appender to control logging events
     @Mock
     private Appender mockAppender;
     @Captor
-    private ArgumentCaptor<LoggingEvent> captorLoggingEvent;
+    private ArgumentCaptor captorLoggingEvent;
 
     private static String baseDir;
 
     private static HolodeckB2BTestCore core;
 
-    private FindPModes handler;
+    private AuthorizeMessage handler;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        baseDir = FindPModesTest.class.getClassLoader()
+        baseDir = AuthorizeMessageTest.class.getClassLoader()
                 .getResource("handlers").getPath();
         core = new HolodeckB2BTestCore(baseDir);
         HolodeckB2BCoreInterface.setImplementation(core);
@@ -91,11 +89,8 @@ public class FindPModesTest {
 
     @Before
     public void setUp() throws Exception {
-        handler = new FindPModes();
-        // Adding appender to the FindPModes logger
-        Logger logger = LogManager.getRootLogger();
-        logger.addAppender(mockAppender);
-        logger.setLevel(Level.DEBUG);
+        handler = new AuthorizeMessage();
+        LogManager.getRootLogger().addAppender(mockAppender);
     }
 
     @After
@@ -112,10 +107,11 @@ public class FindPModesTest {
         SOAPHeaderBlock headerBlock = Messaging.createElement(env);
         // Adding UserMessage from mmd
         OMElement umElement = UserMessageElement.createElement(headerBlock, mmd);
-
+//        System.out.println("umElement: " + umElement);
         MessageContext mc = new MessageContext();
         mc.setFLOW(MessageContext.IN_FLOW);
-
+        // Setting input message property
+        mc.setProperty(MessageContextProperties.IN_USER_MESSAGE, umElement);
         try {
             mc.setEnvelope(env);
         } catch (AxisFault axisFault) {
@@ -126,46 +122,46 @@ public class FindPModesTest {
         pmode.setMep(EbMSConstants.ONE_WAY_MEP);
         pmode.setMepBinding(EbMSConstants.ONE_WAY_PUSH);
 
-        PartnerConfig initiator = new PartnerConfig();
-        pmode.setInitiator(initiator);
-
-        PartnerConfig responder = new PartnerConfig();
-        pmode.setResponder(responder);
-
-        Leg leg = new Leg();
-        pmode.addLeg(leg);
-
         UserMessage userMessage
                 = UserMessageElement.readElement(umElement);
 
+        String pmodeId = userMessage.getCollaborationInfo().getAgreement().getPModeId();
+
+        // todo It seems strange that we need to set the PMode id value separately
+        // todo when it is contained within the agreement
+        // todo But if we don't set it the value returned by userMessage.getPModeId() is null now
+        userMessage.setPModeId(pmodeId);
+
         String msgId = userMessage.getMessageId();
-
-        TradingPartner sender = userMessage.getSender();
-        initiator.setRole(sender.getRole());
-        initiator.setPartyIds(sender.getPartyIds());
-
-        TradingPartner receiver = userMessage.getReceiver();
-        responder.setRole(receiver.getRole());
-        responder.setPartyIds(receiver.getPartyIds());
-
-        AgreementReference agreementReference =
-                userMessage.getCollaborationInfo().getAgreement();
-        String pmodeId = agreementReference.getPModeId();
-        String agreementRefName = agreementReference.getName();
-        String agreementRefType = agreementReference.getType();
 
         pmode.setId(pmodeId);
 
-        Agreement agreement = new Agreement();
-        agreement.setName(agreementRefName);
-        agreement.setType(agreementRefType);
-        pmode.setAgreement(agreement);
-
         core.getPModeSet().add(pmode);
 
-        // Setting input message property
+        // Setting token configuration
+        UsernameTokenConfig tokenConfig = new UsernameTokenConfig();
+        tokenConfig.setUsername("username");
+        tokenConfig.setPassword("secret");
+
+        mc.setProperty(SecurityConstants.EBMS_USERNAMETOKEN, tokenConfig);
+
+        // Setting security configuration
+        SecurityConfig secConfig = new SecurityConfig();
+        secConfig.setUsernameTokenConfiguration(
+                ISecurityConfiguration.WSSHeaderTarget.EBMS, tokenConfig);
+
+        PartnerConfig responder = new PartnerConfig();
+        responder.setSecurityConfiguration(secConfig);
+
+        pmode.setResponder(responder);
+
+        final Map<String, IAuthenticationInfo> authInfo = new HashMap<>();
+        authInfo.put(SecurityConstants.EBMS_USERNAMETOKEN, tokenConfig);
+
+        mc.setProperty(SecurityConstants.MC_AUTHENTICATION_INFO, authInfo);
+
         UpdateManager updateManager = core.getUpdateManager();
-        System.out.println("um: " + updateManager.getClass());
+
         IUserMessageEntity userMessageEntity =
                 updateManager.storeIncomingMessageUnit(userMessage);
         mc.setProperty(MessageContextProperties.IN_USER_MESSAGE,
@@ -178,20 +174,12 @@ public class FindPModesTest {
             fail(e.getMessage());
         }
 
-        // Checking log messages to make sure handler found pmode
-        verify(mockAppender, atLeastOnce())
-                .doAppend(captorLoggingEvent.capture());
-        List<LoggingEvent> events = captorLoggingEvent.getAllValues();
-        String expLogMsg = "Found P-Mode [" + pmode.getId()
-                + "] for User Message [" + msgId + "]";
-        boolean containsExpLogMsg = false;
-        for(LoggingEvent e : events) {
-            if(e.getLevel().equals(Level.DEBUG)) {
-                if(e.getRenderedMessage().equals(expLogMsg)) {
-                    containsExpLogMsg = true;
-                }
-            }
-        }
-        assertTrue(containsExpLogMsg);
+        verify(mockAppender, atLeastOnce()).doAppend((LoggingEvent)captorLoggingEvent.capture());
+        LoggingEvent loggingEvent = (LoggingEvent)captorLoggingEvent.getValue();
+        //Check log level
+        assertThat(loggingEvent.getLevel(), is(Level.INFO));
+        //Check the message being logged
+        assertThat(loggingEvent.getRenderedMessage(),
+                is("Message [Primary msg msgId="+msgId+"] successfully authorized"));
     }
 }

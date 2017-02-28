@@ -22,55 +22,54 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.holodeckb2b.common.messagemodel.Payload;
 import org.holodeckb2b.common.messagemodel.SchemaReference;
 import org.holodeckb2b.common.mmd.xml.MessageMetaData;
+import org.holodeckb2b.core.testhelpers.TestUtils;
+import org.holodeckb2b.interfaces.general.EbMSConstants;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.xml.namespace.QName;
-import java.io.File;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created at 23:16 29.01.17
  *
+ * todo move piElement initialisation out of the test methods
+ *
  * @author Timur Shakuov (t.shakuov at gmail.com)
  */
-public class SchemaTest {
+public class SchemaElementTest {
+
+    private static final QName SCHEMA_ELEMENT_NAME =
+            new QName(EbMSConstants.EBMS3_NS_URI, "Schema");
 
     private OMElement plElement; // PayloadInfo
 
     @Before
     public void setUp() throws Exception {
-        final String mmdPath =
-                this.getClass().getClassLoader()
-                        .getResource("packagetest/mmd_pcktest.xml").getPath();
-        final File f = new File(mmdPath);
-        MessageMetaData mmd = null;
-        try {
-            mmd = MessageMetaData.createFromFile(f);
-        } catch (final Exception e) {
-            fail("Unable to test because MMD could not be read correctly!");
-        }
+        MessageMetaData mmd = TestUtils.getMMD("packagetest/mmd_pcktest.xml", this);
         // Creating SOAP envelope
         SOAPEnvelope soapEnvelope = SOAPEnv.createEnvelope(SOAPEnv.SOAPVersion.SOAP_12);
         // Adding header
         SOAPHeaderBlock headerBlock = Messaging.createElement(soapEnvelope);
 
-        OMElement umElement = UserMessage.createElement(headerBlock, mmd);
+        OMElement umElement = UserMessageElement.createElement(headerBlock, mmd);
         // Creating PayloadInfo element from mmd
-        plElement = PayloadInfo.createElement(umElement, mmd.getPayloads());
+        plElement = PayloadInfoElement.createElement(umElement, mmd.getPayloads());
     }
 
     @Test
     public void testCreateElement() throws Exception {
-        OMElement piElement = PartInfo.createElement(plElement, new Payload());
+        OMElement piElement = PartInfoElement.createElement(plElement, new Payload());
         SchemaReference schema = new SchemaReference();
         schema.setLocation("somewhere");
         schema.setNamespace("namespace1");
         schema.setVersion("test");
 
-        OMElement schemaElement = Schema.createElement(piElement, schema);
+        OMElement schemaElement = SchemaElement.createElement(piElement, schema);
         assertNotNull(schemaElement);
+        assertEquals(SCHEMA_ELEMENT_NAME, schemaElement.getQName());
         assertEquals("somewhere",
                 schemaElement.getAttributeValue(new QName("location")));
         assertEquals("namespace1",
@@ -87,9 +86,9 @@ public class SchemaTest {
         schema.setNamespace("namespace1");
         schema.setVersion("test");
         payload.setSchemaReference(schema);
-        OMElement piElement = PartInfo.createElement(plElement, payload);
+        OMElement piElement = PartInfoElement.createElement(plElement, payload);
 
-        OMElement schemaElement = Schema.getElement(piElement);
+        OMElement schemaElement = SchemaElement.getElement(piElement);
         assertNotNull(schemaElement);
         assertEquals("somewhere",
                 schemaElement.getAttributeValue(new QName("location")));
@@ -107,10 +106,10 @@ public class SchemaTest {
         testSchema.setNamespace("namespace1");
         testSchema.setVersion("test");
         payload.setSchemaReference(testSchema);
-        OMElement piElement = PartInfo.createElement(plElement, payload);
-        OMElement schemaElement = Schema.createElement(piElement, testSchema);
+        OMElement piElement = PartInfoElement.createElement(plElement, payload);
+        OMElement schemaElement = SchemaElement.createElement(piElement, testSchema);
 
-        SchemaReference schema = Schema.readElement(schemaElement);
+        SchemaReference schema = SchemaElement.readElement(schemaElement);
         assertNotNull(schema);
         assertEquals("somewhere", schema.getLocation());
         assertEquals("namespace1", schema.getNamespace());

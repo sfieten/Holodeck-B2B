@@ -33,7 +33,7 @@ import org.holodeckb2b.interfaces.messagemodel.IPayload;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class PayloadInfo {
+public class PayloadInfoElement {
 
     /**
      * The fully qualified name of the element as an {@see QName}
@@ -60,7 +60,7 @@ public class PayloadInfo {
 
         // Fill it based on the given data
         for(final IPayload p : payloads)
-            PartInfo.createElement(plInfo, p);
+            PartInfoElement.createElement(plInfo, p);
 
         return plInfo;
     }
@@ -95,10 +95,10 @@ public class PayloadInfo {
         // Create new collection
         final ArrayList<IPayload> payloads = new ArrayList<>();
         // Get all child elements containing the properties
-        final Iterator<?> it = PartInfo.getElements(piElement);
+        final Iterator<?> it = PartInfoElement.getElements(piElement);
         // Read each property element and add it info to the collection
         while (it.hasNext())
-            payloads.add(PartInfo.readElement((OMElement) it.next()));
+            payloads.add(PartInfoElement.readElement((OMElement) it.next()));
 
         return payloads;
     }

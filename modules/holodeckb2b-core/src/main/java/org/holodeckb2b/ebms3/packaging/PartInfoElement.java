@@ -34,7 +34,7 @@ import org.holodeckb2b.interfaces.messagemodel.IPayload;
  *
  * @author Sander Fieten <sander at holodeck-b2b.org>
  */
-public class PartInfo {
+public class PartInfoElement {
 
     /**
      * The fully qualified name of the element as an {@see QName}
@@ -73,18 +73,20 @@ public class PartInfo {
             piElement.addAttribute(HREF_ATTR, href, null);
         }
 
+        // todo we need to add filling of the other attributes: containment and mimeType ?
+
         // Create the Schema element (if schema reference is provided)
         final ISchemaReference schemaRef = data.getSchemaReference();
         if (schemaRef != null)
-            Schema.createElement(piElement, schemaRef);
+            SchemaElement.createElement(piElement, schemaRef);
         // Create the Description element (if a description is provided)
         final IDescription descr = data.getDescription();
         if (descr != null && !Utils.isNullOrEmpty(descr.getText()))
-            Description.createElement(piElement, descr);
+            DescriptionElement.createElement(piElement, descr);
         // Create the PartProperties element (if there are message properties)
         final Collection<IProperty> partProps = data.getProperties();
         if (!Utils.isNullOrEmpty(partProps))
-            PartProperties.createElement(piElement, partProps);
+            PartPropertiesElement.createElement(piElement, partProps);
 
         return piElement;
     }
@@ -132,20 +134,21 @@ public class PartInfo {
                 plData.setContainment(IPayload.Containment.EXTERNAL);
 
             plData.setPayloadURI(href);
+            plData.setContentLocation(href);
         }
 
         // Read and process Schema element (optional)
-        OMElement schema = Schema.getElement(piElement);
+        OMElement schema = SchemaElement.getElement(piElement);
         if(schema != null)
-            plData.setSchemaReference(Schema.readElement(schema));
+            plData.setSchemaReference(SchemaElement.readElement(schema));
         // Read and process Description element (optional)
-        OMElement description = Description.getElement(piElement);
+        OMElement description = DescriptionElement.getElement(piElement);
         if(description != null)
-            plData.setDescription(Description.readElement(description));
+            plData.setDescription(DescriptionElement.readElement(description));
         // Read and process the PartProperties element (optional)
-        OMElement partProperties = PartProperties.getElement(piElement);
+        OMElement partProperties = PartPropertiesElement.getElement(piElement);
         if(partProperties != null)
-            plData.setProperties(PartProperties.readElement(partProperties));
+            plData.setProperties(PartPropertiesElement.readElement(partProperties));
 
         return plData;
     }
