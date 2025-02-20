@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2025 The Holodeck B2B Team, Sander Fieten
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.holodeckb2b</groupId>
+		<artifactId>holodeckb2b-parent</artifactId>
+		<version>8.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>holodeckb2b-main</artifactId>
+	<packaging>pom</packaging>
+	<name>Holodeck B2B</name>
+	<url>http://www.holodeck-b2b.org/</url>
+	<inceptionYear>2015</inceptionYear>
+	<description>
+		This project contains the Core components and default implementations of the
+		P-Mode and message data storage and security components of Holodeck B2B.
+	</description>
+
+	<developers>
+		<developer>
+			<name>Sander Fieten</name>
+			<organization>Chasquis</organization>
+			<organizationUrl>
+				http://chasquis-consulting.com/holodeck-b2b-support/</organizationUrl>
+			<email>sander at chasquis-consulting.com</email>
+			<roles>
+				<role>Architect</role>
+				<role>Lead developer</role>
+			</roles>
+			<timezone>Europe/Amsterdam</timezone>
+		</developer>
+		<developer>
+			<name>Renate Slebe</name>
+			<organization>Chasquis</organization>
+			<organizationUrl>
+				http://chasquis-consulting.com/holodeck-b2b-support/</organizationUrl>
+			<email>renate at chasquis-consulting.com</email>
+			<roles>
+				<role>Product manager</role>
+				<role>QA and documentation</role>
+			</roles>
+			<timezone>Europe/Amsterdam</timezone>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Philip Helger</name>
+			<email>philip at helger.com</email>
+		</contributor>
+		<contributor>
+			<name>Timur Shakuov</name>
+			<email>t.shakuov at gmail.com</email>
+		</contributor>
+	</contributors>
+
+	<modules>
+		<module>core</module>
+		<module>ebms3as4</module>
+		<module>certmanager</module>
+		<module>secprovider</module>
+		<module>mds</module>
+		<module>psp</module>
+		<module>ui</module>
+		<!--        <module>holodeckb2b-it</module> -->
+	</modules>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License v3</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+		</license>
+	</licenses>
+
+	<dependencyManagement>
+		<dependencies>
+			<!--===============================================================
+                First the modules of Holodeck B2B itself
+            =============================================================== -->
+			<dependency>
+				<groupId>org.holodeckb2b</groupId>
+				<artifactId>holodeckb2b-interfaces</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.holodeckb2b</groupId>
+				<artifactId>holodeckb2b-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>holodeckb2b-certmanager</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>holodeckb2b-ebms3-secprovider</artifactId>
+				<version>${project.version}</version>
+			</dependency> 			
+			<dependency>
+				<groupId>org.holodeckb2b</groupId>
+				<artifactId>holodeckb2b-metadatastorage</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.holodeckb2b</groupId>
+				<artifactId>holodeckb2b-payloadstorage</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.holodeckb2b</groupId>
+				<artifactId>holodeckb2b-ebms3as4</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.holodeckb2b</groupId>
+				<artifactId>holodeckb2b-ui</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!--===============================================================
+                XML Processing libraries
+            =============================================================== -->
+			<dependency>
+				<groupId>org.simpleframework</groupId>
+				<artifactId>simple-xml</artifactId>
+				<version>2.7.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>stax</groupId>
+						<artifactId>stax-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>2.3.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.activation</groupId>
+						<artifactId>javax.activation-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jaxb</groupId>
+				<artifactId>jaxb-runtime</artifactId>
+				<version>2.3.8</version>
+			</dependency>
+			
+			<!--===============================================================
+                Caching libraries
+            =============================================================== -->
+			<dependency>
+				<groupId>javax.cache</groupId>
+				<artifactId>cache-api</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>3.10.8</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.glassfish.jaxb</groupId>
+						<artifactId>jaxb-runtime</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+						
+			<!--===============================================================
+                Test dependencies
+            =============================================================== -->
+		    <dependency>
+		        <groupId>org.junit.jupiter</groupId>
+		        <artifactId>junit-jupiter</artifactId>
+		        <version>5.9.3</version>
+		        <scope>test</scope>
+		    </dependency>
+		    <dependency>
+		        <groupId>org.junit.vintage</groupId>
+		        <artifactId>junit-vintage-engine</artifactId>
+		        <version>5.7.2</version>
+		        <scope>test</scope>
+		    </dependency>
+	        <dependency>
+	            <groupId>com.sun.activation</groupId>
+	            <artifactId>jakarta.activation</artifactId>
+	            <version>1.2.1</version>
+	            <scope>test</scope>
+	        </dependency>		    
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-junit-jupiter</artifactId>
+				<version>5.14.2</version>
+				<scope>test</scope>
+			</dependency>		    
+	        <dependency>
+	            <groupId>${project.groupId}</groupId>
+	            <artifactId>holodeckb2b-core</artifactId>
+	            <version>${project.version}</version>
+	            <type>test-jar</type>
+	            <scope>test</scope>
+	        </dependency>
+			<dependency>
+				<groupId>org.holodeckb2b.commons</groupId>
+				<artifactId>generic-utils</artifactId>
+				<version>${hb2b-utils-version}</version>
+				<type>test-jar</type>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+		</dependency>			
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<scope>runtime</scope>
+		</dependency>			
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>parse-version</id>
+						<goals>
+							<goal>parse-version</goal>
+						</goals>
+						<configuration>
+							<propertyPrefix>hb2b</propertyPrefix>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

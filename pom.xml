@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2014-2017 The Holodeck B2B Team, Sander Fieten
+    Copyright (C) 2014-2025 The Holodeck B2B Team, Sander Fieten
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,30 +23,27 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.holodeckb2b</groupId>
-	<artifactId>holodeckb2b</artifactId>
+	<artifactId>holodeckb2b-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>8.0.0-SNAPSHOT</version>
-	<name>Holodeck B2B</name>
+	<name>Holodeck B2B - BOM</name>
 	<url>http://www.holodeck-b2b.org/</url>
 	<inceptionYear>2015</inceptionYear>
 	<description>
-		An open source B2B messaging solution that implements the OASIS
-		specifications for ebXML Messaging version 3 and AS4 profile.
+		An open source B2B messaging solution that implements the OASIS Standards for 
+		ebXML Messaging version 3 and AS4 profile.
 		It is designed with extensibility in mind providing an interface layer
-		(API) which you can find in the Interfaces module and lots of
-		documentation inside the code.
+		(API) that allows to add custom functionality, for example different storage
+		solutions for message meta-data and payload content.
 	</description>
-
 	<scm>
 		<url>https://github.com/holodeck-b2b/Holodeck-B2B</url>
 		<connection>scm:git:https://github.com/holodeck-b2b/Holodeck-B2B.git</connection>
-		<developerConnection>
-			scm:git:git@github.com:holodeck-b2b/Holodeck-B2B.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:holodeck-b2b/Holodeck-B2B.git</developerConnection>
 	</scm>
 	<issueManagement>
 		<url>https://github.com/holodeck-b2b/Holodeck-B2B/issues</url>
 	</issueManagement>
-
 	<organization>
 		<name>The Holodeck B2B Team</name>
 		<url>http://www.holodeck-b2b.org/team</url>
@@ -88,97 +85,47 @@
 		</contributor>
 	</contributors>
 
-	<properties>
-		<!-- This version of Holodeck B2B requires at least JDK 11 -->
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
-
-		<hb2b-utils-version>1.6.0</hb2b-utils-version>
-		<axis2-version>1.8.2</axis2-version>
-		<axiom-version>1.4.0</axiom-version>
-		<netbeans.hint.license>gpl30</netbeans.hint.license>
-		<log4j.version>2.23.1</log4j.version>
-	</properties>
-
-	<modules>
-		<module>modules/holodeckb2b-interfaces</module>
-		<module>modules/holodeckb2b-core</module>
-		<module>modules/holodeckb2b-ebms3as4</module>
-		<module>modules/holodeckb2b-security</module>
-		<module>modules/holodeckb2b-default-mds</module>
-		<module>modules/holodeckb2b-default-psp</module>
-		<module>modules/holodeckb2b-ui</module>
-		<module>modules/holodeckb2b-distribution</module>
-		<!--        <module>modules/holodeckb2b-it</module> -->
-	</modules>
-
-	<licenses>
+	<licenses>		
+		<license>
+			<name>GNU Lesser General Public License v3</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+			<comments>The LGPLv3 license is used for the interface project to give extension developers
+				more freedom to choose the license for their components, which can be closed source.
+				Note that using another license then GPLv3 is only allowed as long as the extension 
+				only uses the interfaces as provided in the interface project.
+			</comments>
+		</license>
 		<license>
 			<name>GNU General Public License v3</name>
 			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+			<comments>The main project code is licensed under the GPLv3</comments>
 		</license>
 	</licenses>
 
+	<properties>
+		<!-- This version of Holodeck B2B requires at least JDK 11 -->
+		<maven.compiler.release>11</maven.compiler.release>		
+		
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<!-- Version declaration for libraries always included with Holodeck B2B -->
+		<hb2b-utils-version>1.6.0</hb2b-utils-version>
+		<axis2-version>1.8.2</axis2-version>
+		<axiom-version>1.4.0</axiom-version>
+		<log4j.version>2.23.1</log4j.version>
+		<bc.version>1.80</bc.version>
+	</properties>
+	
 	<dependencyManagement>
 		<dependencies>
-
-			<!--===============================================================
-                First the modules of Holodeck B2B itself
-            =============================================================== -->
-			<dependency>
-				<groupId>org.holodeckb2b</groupId>
-				<artifactId>holodeckb2b-interfaces</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.holodeckb2b</groupId>
-				<artifactId>holodeckb2b-core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>holodeckb2b-certmanager</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.holodeckb2b</groupId>
-				<artifactId>holodeckb2b-metadatastorage</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.holodeckb2b</groupId>
-				<artifactId>holodeckb2b-payloadstorage</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.holodeckb2b</groupId>
-				<artifactId>holodeckb2b-ebms3as4</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.holodeckb2b</groupId>
-				<artifactId>holodeckb2b-ui</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<!-- Generic utility classes  -->
 			<dependency>
 				<groupId>org.holodeckb2b.commons</groupId>
 				<artifactId>generic-utils</artifactId>
 				<version>${hb2b-utils-version}</version>
 			</dependency>
-
-			<!--===============================================================
-                Holodeck B2B is built on Axis2, so include all relevant Axis2
-                modules
-            =============================================================== -->
 			<dependency>
 				<groupId>org.apache.axis2</groupId>
 				<artifactId>axis2-kernel</artifactId>
-				<version>${axis2-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.axis2</groupId>
-				<artifactId>axis2-saaj</artifactId>
 				<version>${axis2-version}</version>
 			</dependency>
 			<dependency>
@@ -200,50 +147,17 @@
 				<groupId>org.apache.ws.commons.axiom</groupId>
 				<artifactId>axiom-dom</artifactId>
 				<version>${axiom-version}</version>
-			</dependency>
-
-			<!--===============================================================
-                XML Processing libraries
-            =============================================================== -->
+			</dependency>			
 			<dependency>
-				<groupId>xerces</groupId>
-				<artifactId>xercesImpl</artifactId>
-				<version>2.12.2</version>
-				<scope>runtime</scope>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk18on</artifactId>
+				<version>${bc.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.simpleframework</groupId>
-				<artifactId>simple-xml</artifactId>
-				<version>2.7.1</version>
-				<exclusions>
-					<exclusion>
-						<groupId>stax</groupId>
-						<artifactId>stax-api</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<!-- Add JAXB for Java9 and later compatibilitu -->
-			<dependency>
-				<groupId>javax.xml.bind</groupId>
-				<artifactId>jaxb-api</artifactId>
-				<version>2.3.1</version>
-				<exclusions>
-					<exclusion>
-						<groupId>javax.activation</groupId>
-						<artifactId>javax.activation-api</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.glassfish.jaxb</groupId>
-				<artifactId>jaxb-runtime</artifactId>
-				<version>2.3.8</version>
-				<scope>runtime</scope>
-			</dependency>
-
-			<!--===============================================================
-                Log4j is used for logging in Holodeck B2B
-            =============================================================== -->
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bctls-jdk18on</artifactId>
+				<version>${bc.version}</version>
+			</dependency>			
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-api</artifactId>
@@ -252,77 +166,8 @@
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-core</artifactId>
-	            <scope>runtime</scope>
 				<version>${log4j.version}</version>
 			</dependency>
-			
-			<!--===============================================================
-                Test dependencies
-            =============================================================== -->
-		    <dependency>
-		        <groupId>org.junit.jupiter</groupId>
-		        <artifactId>junit-jupiter</artifactId>
-		        <version>5.9.3</version>
-		        <scope>test</scope>
-		    </dependency>
-		    <dependency>
-		        <groupId>org.junit.vintage</groupId>
-		        <artifactId>junit-vintage-engine</artifactId>
-		        <version>5.7.2</version>
-		        <scope>test</scope>
-		    </dependency>
-	        <dependency>
-	            <groupId>com.sun.activation</groupId>
-	            <artifactId>jakarta.activation</artifactId>
-	            <version>1.2.1</version>
-	            <scope>test</scope>
-	        </dependency>		    
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-junit-jupiter</artifactId>
-				<version>5.14.2</version>
-				<scope>test</scope>
-			</dependency>		    
-	        <dependency>
-	            <groupId>${project.groupId}</groupId>
-	            <artifactId>holodeckb2b-core</artifactId>
-	            <version>${project.version}</version>
-	            <type>test-jar</type>
-	            <scope>test</scope>
-	        </dependency>
-			<dependency>
-				<groupId>org.holodeckb2b.commons</groupId>
-				<artifactId>generic-utils</artifactId>
-				<version>${hb2b-utils-version}</version>
-				<type>test-jar</type>
-				<scope>test</scope>
-			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
-
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.2</version>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>parse-version</id>
-						<goals>
-							<goal>parse-version</goal>
-						</goals>
-						<configuration>
-							<propertyPrefix>hb2b</propertyPrefix>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
