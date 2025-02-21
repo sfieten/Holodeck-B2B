@@ -50,12 +50,12 @@
             file-based back-end integration
         =============================================================== -->
 		<dependency>
-			<groupId>org.holodeckb2b</groupId>
-			<artifactId>holodeckb2b-interfaces</artifactId>
+		    <groupId>${project.groupId}</groupId>
+		    <artifactId>holodeckb2b-interfaces</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.holodeckb2b</groupId>
-			<artifactId>holodeckb2b-core</artifactId>
+		    <groupId>${project.groupId}</groupId>
+		    <artifactId>holodeckb2b-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -66,52 +66,33 @@
             <artifactId>holodeckb2b-ebms3-secprovider</artifactId>
         </dependency>        
 		<dependency>
-			<groupId>org.holodeckb2b</groupId>
-			<artifactId>holodeckb2b-metadatastorage</artifactId>
+		    <groupId>${project.groupId}</groupId>
+		    <artifactId>holodeckb2b-metadatastorage</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.holodeckb2b</groupId>
-			<artifactId>holodeckb2b-payloadstorage</artifactId>
+		    <groupId>${project.groupId}</groupId>
+		    <artifactId>holodeckb2b-payloadstorage</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.holodeckb2b</groupId>
-			<artifactId>holodeckb2b-ebms3as4</artifactId>
+		    <groupId>${project.groupId}</groupId>
+		    <artifactId>holodeckb2b-ebms3as4</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>holodeckb2b-ebms3as4</artifactId>
+            <type>aar</type>
+            <classifier>msh</classifier>
+            <version>${project.version}</version>            
+        </dependency>        
 		<dependency>
-			<groupId>org.holodeckb2b</groupId>
-			<artifactId>holodeckb2b-ui</artifactId>
+		    <groupId>${project.groupId}</groupId>
+		    <artifactId>holodeckb2b-ui</artifactId>
 		</dependency>		   
         <dependency>
             <groupId>org.holodeckb2b.extensions</groupId>
 			<artifactId>file-backend</artifactId>
 			<version>2.0.0</version>
         </dependency>
-        
-        <!--===============================================================
-            Add logging dependencies to ensure consistent logging             
-        =============================================================== -->
-		<!-- Axis2 use Commons logging, so add log4j binding -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-jcl</artifactId>
-            <scope>runtime</scope>
-			<version>${log4j.version}</version>
-		</dependency>
-		<!-- We also don't use SLF4J directly but it is used by libs like WSS4J. So we want to
-            bind this to log4j as well -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-            <scope>runtime</scope>
-			<version>${log4j.version}</version>
-		</dependency>
-		<!-- Same for the Java Logging framework which is used by Bouncy Castle -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-jul</artifactId>
-            <scope>runtime</scope>
-            <version>${log4j.version}</version>
-        </dependency>               
     </dependencies>
 
     <build>

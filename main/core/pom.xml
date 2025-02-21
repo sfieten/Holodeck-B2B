@@ -82,6 +82,24 @@
 			<type>test-jar</type>
 			<scope>test</scope>            
         </dependency>
+		
+		<!-- Runtime dependencies -->
+		
+		<!-- Axis2 use Commons logging, so add log4j binding -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-jcl</artifactId>
+			<scope>runtime</scope>
+			<version>${log4j.version}</version>
+		</dependency>
+		<!-- Java Logging framework which is used by Bouncy Castle -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-jul</artifactId>
+			<scope>runtime</scope>
+			<version>${log4j.version}</version>
+		</dependency>    
+		
 	</dependencies>
 
 	<build>

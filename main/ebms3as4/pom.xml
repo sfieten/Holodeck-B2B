@@ -58,11 +58,6 @@
 			<artifactId>mockito-junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>jakarta.activation</artifactId>
-            <scope>test</scope>
-        </dependency>
 
 		<!-- Test util classes from the Core -->
         <dependency>
@@ -76,6 +71,13 @@
 			<artifactId>generic-utils</artifactId>
 			<type>test-jar</type>
 			<scope>test</scope>            
+        </dependency>       
+        
+        <!-- Runtime dependencies -->
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>jakarta.activation</artifactId>
+            <scope>runtime</scope>
         </dependency>        
     </dependencies>
 

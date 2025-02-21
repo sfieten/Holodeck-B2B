@@ -77,6 +77,14 @@
             <artifactId>wss4j-ws-security-dom</artifactId>
             <version>${wss4j.version}</version>            
         </dependency>
+        <!-- WSS4J uses SLF4J, so ensure it's bridged to Log4j which is
+         used as standard logging framework in Holodeck B2B -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>        
                
         <!-- Test dependencies -->
 	    <dependency>
