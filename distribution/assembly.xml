@@ -99,11 +99,21 @@
     </fileSets>
 
     <dependencySets>
+        <dependencySet>
+            <outputDirectory>repository/services</outputDirectory>
+            <includes>
+                <include>org.holodeckb2b:*:aar</include>
+            </includes>
+            <useTransitiveDependencies>false</useTransitiveDependencies>
+            <useProjectArtifact>false</useProjectArtifact>
+        </dependencySet>
+        
     	<!-- Add the XML schema's from the default included file integration -->
 		<dependencySet>
 			<outputDirectory>repository/</outputDirectory>
 			<includes>
 				<include>org.holodeckb2b.extensions:file-backend</include>
+				<include>org.holodeckb2b:*:jar</include>
 			</includes>
 			<unpack>true</unpack>
 			<unpackOptions>
@@ -111,13 +121,19 @@
 					<include>**/*.xsd</include>
 				</includes>
 			</unpackOptions>
+		    <useTransitiveDependencies>false</useTransitiveDependencies>
+		    <useProjectArtifact>false</useProjectArtifact>
 		</dependencySet>
 	    <!--
 	    	Add all required libraries to the lib directory
 	    -->
         <dependencySet>
             <outputDirectory>lib</outputDirectory>
-            <scope>runtime</scope>
+            <excludes>
+                <exclude>*:*:aar</exclude>
+            </excludes>
+            <scope>runtime</scope>            
+            <useProjectArtifact>false</useProjectArtifact>
         </dependencySet>
     </dependencySets>
 </assembly>
