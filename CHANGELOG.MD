@@ -2,6 +2,33 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 8.0.0
+##### 
+### Added
+* Possibility to configure TLS parameters, such as the client certificate and allowed TLS protocols in P-Mode, see
+  `org.holodeckb2b.interfaces.pmode.ITLSConfiguration` for more details.
+* Possibility to configure the connection and read time out in the P-Mode, see `org.holodeckb2b.interfaces.pmode.IProtocol` 
+  for more details.
+* Methods `validateTlsCertificate(List<X509Certificate>)` and `validateTlsCertificate(X509Certificate, ITLSConfiguration)` in
+  `org.holodeckb2b.interfaces.security.trust.ICertificateManager` to validate trust of TLS server certificates. 
+* Event mechanism to allow components to react on changes in the P-Mode set. Components interested in these events must
+  implement `org.holodeckb2b.interfaces.pmode.IPModeSetListener` and register with the P-Mode set through `
+  org.holodeckb2b.interfaces.pmode.IPModeSet.registerEventListener(IPModeSetListener)`
+
+### Changed
+* Changed names of the _Certificate Manager_ methods for trust validation of message level certificates to
+  `validateMlsCertificate()` 
+* Split the core interface to access the current P-Mode set and the interface defining the P-Mode storage 
+  component in `org.holodeckb2b.interfaces.pmode.IPModeSet` respectively `org.holodeckb2b.interfaces.pmode.IPModeStorage`. 
+  Extensions implementing a custom P-Mode storage component should be updated and implement the latter.
+* Updated version of Xerces to 2.12.2
+* Updated version of WSS4J to 3.0.4
+* Updated version of Santuario to 3.0.5
+
+### Removed
+* Unused element `//SignatureConfiguration/enableRevocationCheck` in the P-Mode XML schema. Note: revocation checking is 
+  managed in the _Certificate Manager_ configuration file.
+
 ## 7.0.1
 ##### 2025-01-13
 ### Fixed

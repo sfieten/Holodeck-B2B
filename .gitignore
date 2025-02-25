@@ -33,6 +33,7 @@ db/
 ######################
 nb-configuration.xml
 .project
+.factorypath
 .settings/
 nbproject/
 *.iml
