@@ -48,7 +48,8 @@
         	<outputDirectory>.</outputDirectory>
             <directory>../</directory>            
             <includes>
-                <include>*.md</include>
+                <include>*.md</include>                
+                <include>*.MD</include>                
             </includes>
         </fileSet>       
     </fileSets>
