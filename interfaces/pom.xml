@@ -26,9 +26,6 @@
     </parent>
     <artifactId>holodeckb2b-interfaces</artifactId>
     <packaging>jar</packaging>
-    <properties>
-        <netbeans.hint.license>lgpl30</netbeans.hint.license>
-    </properties>
     <name>Holodeck B2B - Interfaces</name>
     <description>
         This project contains the interfaces provided and used by the Holodeck B2B Core and which can be used 
@@ -84,6 +81,10 @@
 		</developer>
 	</developers>
 	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
@@ -94,7 +95,7 @@
 
 	<profiles>
 		<profile>
-			<id>release</id>
+			<id>publish</id>
 			<build>
 				<plugins>
 					<plugin>

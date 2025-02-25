@@ -56,27 +56,22 @@
         <!-- Dependencies for testing -->
 	    <dependency>
 	        <groupId>org.junit.jupiter</groupId>
-	        <artifactId>junit-jupiter</artifactId>
-	        <scope>test</scope>
+	        <artifactId>junit-jupiter</artifactId>	        
 	    </dependency>
 	    <dependency>
 	        <groupId>org.junit.vintage</groupId>
 	        <artifactId>junit-vintage-engine</artifactId>
 	        <scope>test</scope>
-	    </dependency>
-	    
-        <!-- Dependency from common test util classes -->
+	    </dependency>	    
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>holodeckb2b-core</artifactId>
             <type>test-jar</type>
-            <scope>test</scope>
         </dependency> 
        <dependency>
 			<groupId>org.holodeckb2b.commons</groupId>
 			<artifactId>generic-utils</artifactId>
 			<type>test-jar</type>
-			<scope>test</scope>            
         </dependency>
     </dependencies>
 </project>

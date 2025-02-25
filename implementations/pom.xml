@@ -41,8 +41,7 @@
 		<developer>
 			<name>Sander Fieten</name>
 			<organization>Chasquis</organization>
-			<organizationUrl>
-				http://chasquis-consulting.com/holodeck-b2b-support/</organizationUrl>
+			<organizationUrl>http://chasquis-consulting.com/holodeck-b2b-support/</organizationUrl>
 			<email>sander at chasquis-consulting.com</email>
 			<roles>
 				<role>Architect</role>
@@ -74,6 +73,10 @@
 		</contributor>
 	</contributors>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
 	<modules>
 		<module>core</module>
 		<module>ebms3as4</module>
@@ -81,8 +84,7 @@
 		<module>secprovider</module>
 		<module>mds</module>
 		<module>psp</module>
-		<module>ui</module>
-		<!--        <module>holodeckb2b-it</module> -->
+		<module>ui</module>		
 	</modules>
 
 	<licenses>
@@ -106,6 +108,12 @@
 				<groupId>org.holodeckb2b</groupId>
 				<artifactId>holodeckb2b-core</artifactId>
 				<version>${project.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.simpleframework</groupId>
+						<artifactId>simple-xml</artifactId>
+					</exclusion>
+				</exclusions>				
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
@@ -167,11 +175,13 @@
 				<groupId>org.glassfish.jaxb</groupId>
 				<artifactId>jaxb-runtime</artifactId>
 				<version>2.3.8</version>
+	        	<scope>runtime</scope>
 			</dependency>
 	        <dependency>
 	            <groupId>com.sun.activation</groupId>
 	            <artifactId>jakarta.activation</artifactId>
 	            <version>1.2.2</version>
+	        	<scope>runtime</scope>
 	        </dependency>		    
 			
 			<!--===============================================================
@@ -231,18 +241,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-		</dependency>			
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<scope>runtime</scope>
-		</dependency>			
-	</dependencies>
 	
 	<build>
 		<plugins>

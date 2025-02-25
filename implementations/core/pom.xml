@@ -59,47 +59,49 @@
 			<groupId>org.simpleframework</groupId>
 			<artifactId>simple-xml</artifactId>
 		</dependency>
-		
-		<!-- Dependencies specific for testing -->
-	    <dependency>
-	        <groupId>org.junit.jupiter</groupId>
-	        <artifactId>junit-jupiter</artifactId>
-	        <scope>test</scope>
-	    </dependency>
-	    <dependency>
-	        <groupId>org.junit.vintage</groupId>
-	        <artifactId>junit-vintage-engine</artifactId>
-	        <scope>test</scope>
-	    </dependency>
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-junit-jupiter</artifactId>
-			<scope>test</scope>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+		</dependency>			
+		
+		<!-- Runtime dependencies -->		
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>			
 		</dependency>		
-        <dependency>
-			<groupId>org.holodeckb2b.commons</groupId>
-			<artifactId>generic-utils</artifactId>
-			<type>test-jar</type>
-			<scope>test</scope>            
-        </dependency>
-		
-		<!-- Runtime dependencies -->
-		
 		<!-- Axis2 use Commons logging, so add log4j binding -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-jcl</artifactId>
-			<scope>runtime</scope>
 			<version>${log4j.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<!-- Java Logging framework which is used by Bouncy Castle -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-jul</artifactId>
-			<scope>runtime</scope>
 			<version>${log4j.version}</version>
+			<scope>runtime</scope>
 		</dependency>    
 		
+		<!-- Dependencies specific for testing -->		
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>org.holodeckb2b.commons</groupId>
+			<artifactId>generic-utils</artifactId>
+			<type>test-jar</type>
+		</dependency>		
 	</dependencies>
 
 	<build>

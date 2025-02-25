@@ -36,16 +36,10 @@
     </properties>
     
     <dependencies>
-        <!-- The other Holodeck B2B libraries -->
+        <!-- The Holodeck B2B Core -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>holodeckb2b-core</artifactId>
-            <exclusions>
-				<exclusion>
-					<groupId>org.simpleframework</groupId>
-					<artifactId>simple-xml</artifactId>
-				</exclusion>
-			</exclusions>            
+            <artifactId>holodeckb2b-core</artifactId>                        
         </dependency>
 
         <!-- WSS4J Security libs -->

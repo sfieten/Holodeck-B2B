@@ -26,7 +26,7 @@
 	<artifactId>holodeckb2b-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>8.0.0-SNAPSHOT</version>
-	<name>Holodeck B2B - BOM</name>
+	<name>Holodeck B2B - Parent</name>
 	<url>http://www.holodeck-b2b.org/</url>
 	<inceptionYear>2015</inceptionYear>
 	<description>
@@ -105,9 +105,7 @@
 	<properties>
 		<!-- This version of Holodeck B2B requires at least JDK 11 -->
 		<maven.compiler.release>11</maven.compiler.release>		
-		
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
+				
 		<!-- Version declaration for libraries always included with Holodeck B2B -->
 		<hb2b-utils-version>1.6.0</hb2b-utils-version>
 		<axis2-version>1.8.2</axis2-version>
@@ -167,7 +165,43 @@
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-core</artifactId>
 				<version>${log4j.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<profiles>
+		<profile>
+			<id>publish</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.0.1</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.13</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>false</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>	
 </project>
