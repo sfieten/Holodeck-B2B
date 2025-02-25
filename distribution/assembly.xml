@@ -42,21 +42,14 @@
             </excludes>
         </fileSet>
         <!--
-        	Copy the project documentation like README, CHANGELOG and licenses from the parent
+        	Copy the project documentation like README and CHANGELOG from the parent
         -->
         <fileSet>
         	<outputDirectory>.</outputDirectory>
             <directory>../</directory>            
             <includes>
-                <include>*</include>
+                <include>*.md</include>
             </includes>
-            <excludes>
-                <exclude>implementations</exclude>
-                <exclude>distribution</exclude>
-                <exclude>interfaces</exclude>
-                <exclude>pom.xml</exclude>
-                <exclude>.*</exclude>                
-            </excludes>
         </fileSet>       
     </fileSets>
 
